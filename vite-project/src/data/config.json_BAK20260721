@@ -1,0 +1,402 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "在機器學習中，哪一種學習方式依賴於帶有標籤（Labeled）的訓練資料？",
+      "prompt": "提示：這就像是有老師給出標準答案的學習過程。",
+      "choices": [
+        "A. 監督式學習 (Supervised Learning)",
+        "B. 非監督式學習 (Unsupervised Learning)",
+        "C. 強化學習 (Reinforcement Learning)",
+        "D. 聯邦學習 (Federated Learning)"
+      ],
+      "correct": 0,
+      "category": "ML",
+      "emoji": "🤖"
+    },
+    {
+      "id": 2,
+      "text": "當模型在訓練資料上表現極佳，但在未見過的測試資料上表現很差時，這種現象稱為什麼？",
+      "prompt": "提示：模型「死記硬背」了訓練細節。",
+      "choices": [
+        "A. 欠擬合 (Underfitting)",
+        "B. 梯度消失 (Vanishing Gradient)",
+        "C. 過擬合 (Overfitting)",
+        "D. 災難性遺忘 (Catastrophic Forgetting)"
+      ],
+      "correct": 2,
+      "category": "ML",
+      "emoji": "📉"
+    },
+    {
+      "id": 3,
+      "text": "交叉驗證（Cross-Validation）的主要目的是什麼？",
+      "prompt": "提示：為了確保模型評估的穩定性與客觀性。",
+      "choices": [
+        "A. 加速模型的訓練過程",
+        "B. 減少訓練資料集的大小",
+        "C. 評估模型泛化能力並減少過擬合風險",
+        "D. 將多個神經網絡交叉組合"
+      ],
+      "correct": 2,
+      "category": "ML",
+      "emoji": "🔄"
+    },
+    {
+      "id": 4,
+      "text": "梯度下降（Gradient Descent）演算法的作用是什麼？",
+      "prompt": "提示：想像在山谷中尋找最低點。",
+      "choices": [
+        "A. 增加神經網路的層數",
+        "B. 透過更新參數來最小化損失函數 (Loss Function)",
+        "C. 生成新的訓練資料",
+        "D. 計算特徵之間的多項式關聯"
+      ],
+      "correct": 1,
+      "category": "ML",
+      "emoji": "⛰️"
+    },
+    {
+      "id": 5,
+      "text": "Transformer 架構的核心突破在於引入了哪種機制，使其能有效平行處理序列資料？",
+      "prompt": "提示：這篇著名論文的標題是《___ Is All You Need》。",
+      "choices": [
+        "A. 遞迴神經網路 (RNN)",
+        "B. 注意力機制 (Attention Mechanism)",
+        "C. 卷積層 (Convolutional Layer)",
+        "D. 長短期記憶 (LSTM)"
+      ],
+      "correct": 1,
+      "category": "NLP",
+      "emoji": "🧠"
+    },
+    {
+      "id": 6,
+      "text": "在自注意力機制（Self-Attention）中，用來計算注意力權重的三個關鍵矩陣為何？",
+      "prompt": "提示：概念來自資料庫檢索。",
+      "choices": [
+        "A. Input, Output, Hidden",
+        "B. Query, Key, Value",
+        "C. Encoder, Decoder, Attention",
+        "D. Alpha, Beta, Gamma"
+      ],
+      "correct": 1,
+      "category": "NLP",
+      "emoji": "🔍"
+    },
+    {
+      "id": 7,
+      "text": "在大型語言模型中，Tokenization（分詞）的作用是什麼？",
+      "prompt": "提示：它是模型理解人類語言的第一步。",
+      "choices": [
+        "A. 檢查文本中的語法錯誤",
+        "B. 將文本轉換為小單元（Tokens），以便轉換為數字向量",
+        "C. 將文本翻譯成不同的語言",
+        "D. 對文本進行情感分析"
+      ],
+      "correct": 1,
+      "category": "LLM",
+      "emoji": "✂️"
+    },
+    {
+      "id": 8,
+      "text": "調整語言模型生成參數時，提高 Temperature（溫度）會導致什麼結果？",
+      "prompt": "提示：溫度越高，粒子運動越不規則。",
+      "choices": [
+        "A. 生成的文字會更加隨機與具創造性",
+        "B. 生成的文字會完全一致且保守",
+        "C. 模型的回答速度會大幅加快",
+        "D. 模型會消耗更多運算資源"
+      ],
+      "correct": 0,
+      "category": "LLM",
+      "emoji": "🌡️"
+    },
+    {
+      "id": 9,
+      "text": "RAG（Retrieval-Augmented Generation）技術的主要目的是什麼？",
+      "prompt": "提示：結合搜尋引擎與生成模型的優勢。",
+      "choices": [
+        "A. 取代語言模型，完全依賴資料庫檢索",
+        "B. 透過檢索外部知識庫來強化模型的生成準確度，減少幻覺",
+        "C. 將文字自動轉換為高品質圖像",
+        "D. 用於提升模型的推理速度"
+      ],
+      "correct": 1,
+      "category": "RAG",
+      "emoji": "📚"
+    },
+    {
+      "id": 10,
+      "text": "在向量資料庫中，文字通常會被轉換成什麼形式以便於計算語意相似度？",
+      "prompt": "提示：這是一種多維度的數值表示法。",
+      "choices": [
+        "A. 語法樹 (Syntax Tree)",
+        "B. 雜湊值 (Hash Value)",
+        "C. 嵌入向量 (Embedding)",
+        "D. 知識圖譜 (Knowledge Graph)"
+      ],
+      "correct": 2,
+      "category": "RAG",
+      "emoji": "🌌"
+    },
+    {
+      "id": 11,
+      "text": "建置 RAG 系統時，為何需要進行文件切塊（Chunking）？",
+      "prompt": "提示：LLM 的上下文視窗是有限的。",
+      "choices": [
+        "A. 為了加密保護企業機密資料",
+        "B. 因為語言模型有上下文長度限制，且精確切塊能提升檢索關聯性",
+        "C. 為了壓縮檔案大小以節省儲存空間",
+        "D. 切塊能自動修復文本中的錯字"
+      ],
+      "correct": 1,
+      "category": "RAG",
+      "emoji": "🔪"
+    },
+    {
+      "id": 12,
+      "text": "在進階 RAG 流程中，重排序（Reranking）步驟的作用為何？",
+      "prompt": "提示：初篩選出來的文件可能並非全是最相關的。",
+      "choices": [
+        "A. 將生成的回答重新翻譯為使用者的母語",
+        "B. 對向量檢索出的初步結果進行二次評分，確保最相關的內容排在前面",
+        "C. 將使用者的問題重新改寫為多個不同的問題",
+        "D. 隨機打亂結果以增加回答的多樣性"
+      ],
+      "correct": 1,
+      "category": "RAG",
+      "emoji": "📋"
+    },
+    {
+      "id": 13,
+      "text": "Few-Shot Prompting（少樣本提示）是指在提示詞中提供什麼？",
+      "prompt": "提示：舉一反三的「舉例」。",
+      "choices": [
+        "A. 僅提供最終期望輸出的格式要求",
+        "B. 提供一到多個示範問答，幫助模型理解任務模式",
+        "C. 要求模型使用盡可能少的字數回答",
+        "D. 給予模型一些程式碼以進行微調"
+      ],
+      "correct": 1,
+      "category": "PROMPT",
+      "emoji": "📝"
+    },
+    {
+      "id": 14,
+      "text": "Chain-of-Thought (CoT, 思維鏈) 提示工程的核心概念是什麼？",
+      "prompt": "提示：讓模型「一步一步來思考」。",
+      "choices": [
+        "A. 讓模型輸出多種不同的答案供選擇",
+        "B. 引導模型寫出中間的推理步驟，而非直接給出最終答案",
+        "C. 將多個模型的回答串接起來",
+        "D. 限制模型的思考時間以提高效率"
+      ],
+      "correct": 1,
+      "category": "PROMPT",
+      "emoji": "🔗"
+    },
+    {
+      "id": 15,
+      "text": "在與 LLM 互動時，System Prompt（系統提示）通常用於？",
+      "prompt": "提示：設定對話的基調與規則。",
+      "choices": [
+        "A. 作為使用者的每次具體提問",
+        "B. 修正模型已經生成的錯誤回答",
+        "C. 定義模型的角色、行為守則與整體限制",
+        "D. 評估模型輸出的正確性"
+      ],
+      "correct": 2,
+      "category": "PROMPT",
+      "emoji": "⚙️"
+    },
+    {
+      "id": 16,
+      "text": "在 LLM 應用中設定 Guardrails（護欄）的主要目的是什麼？",
+      "prompt": "提示：確保行駛安全，不會偏離正道。",
+      "choices": [
+        "A. 確保模型輸出不會包含有害內容或洩漏隱私",
+        "B. 確保 API 呼叫不超過計費上限",
+        "C. 確保模型每次都給出完全相同的答案",
+        "D. 限制模型只能輸出英文字元"
+      ],
+      "correct": 0,
+      "category": "PROMPT",
+      "emoji": "🛡️"
+    },
+    {
+      "id": 17,
+      "text": "Function Calling（函數呼叫）讓語言模型具備了什麼新能力？",
+      "prompt": "提示：模型不再只是聊天，還能觸發動作。",
+      "choices": [
+        "A. 自動更新自己的權重參數",
+        "B. 輸出結構化的 JSON 以便讓系統執行特定的外部程式碼或 API",
+        "C. 直接連接並修改使用者的作業系統核心",
+        "D. 自動繪製圖表"
+      ],
+      "correct": 1,
+      "category": "AGENT",
+      "emoji": "🛠️"
+    },
+    {
+      "id": 18,
+      "text": "AI Agent 與一般對話模型（如基礎 ChatGPT）最大的不同點在於？",
+      "prompt": "提示：Agent 能主動感知環境並採取行動。",
+      "choices": [
+        "A. Agent 的參數量更大",
+        "B. Agent 只能處理純文字",
+        "C. Agent 具備任務規劃、工具使用與自主執行多步驟目標的能力",
+        "D. Agent 的回應速度較快"
+      ],
+      "correct": 2,
+      "category": "AGENT",
+      "emoji": "🕵️"
+    },
+    {
+      "id": 19,
+      "text": "在 AI Agent 設計中，ReAct 模式（Reasoning and Acting）是指？",
+      "prompt": "提示：思考與行動的交替進行。",
+      "choices": [
+        "A. 模型僅在收到使用者明確指令時才反應",
+        "B. 交替進行推理思考與採取行動（使用工具），藉此解決複雜問題",
+        "C. 利用 React 框架來開發前端 UI",
+        "D. 當模型遇到錯誤時進行自動重啟"
+      ],
+      "correct": 1,
+      "category": "AGENT",
+      "emoji": "🔄"
+    },
+    {
+      "id": 20,
+      "text": "AI Agent 在執行複雜任務時，Planning（規劃）階段的主要工作是？",
+      "prompt": "提示：將大問題拆解為小問題。",
+      "choices": [
+        "A. 將複雜任務拆解為一系列可執行的子任務 (Sub-tasks)",
+        "B. 規劃如何向使用者收費",
+        "C. 決定要使用多少 GPU 資源",
+        "D. 規劃資料庫的備份策略"
+      ],
+      "correct": 0,
+      "category": "AGENT",
+      "emoji": "📅"
+    },
+    {
+      "id": 21,
+      "text": "語言模型產生的「幻覺」（Hallucination）是指什麼現象？",
+      "prompt": "提示：一本正經地胡說八道。",
+      "choices": [
+        "A. 模型生成了過於真實的圖像",
+        "B. 模型輸出聽起來合理，但實際上是錯誤或無根據的資訊",
+        "C. 模型在對話中突然改變語言",
+        "D. 模型的回答中包含大量錯別字"
+      ],
+      "correct": 1,
+      "category": "ETHICS",
+      "emoji": "👻"
+    },
+    {
+      "id": 22,
+      "text": "在 AI 系統中進行「偏見檢測」（Bias Detection）是為了解決什麼問題？",
+      "prompt": "提示：確保模型對所有人都是公平的。",
+      "choices": [
+        "A. 減少模型推理的延遲",
+        "B. 識別並減輕模型因訓練資料不平衡而對特定群體產生的歧視性輸出",
+        "C. 確保模型只回答特定領域的問題",
+        "D. 防止模型記憶使用者的密碼"
+      ],
+      "correct": 1,
+      "category": "ETHICS",
+      "emoji": "⚖️"
+    }
+  ],
+  "tools": [
+    {
+      "name": "LangChain Agent",
+      "icon": "🦜",
+      "category": "agent",
+      "description": "串接多工具的 AI 代理框架",
+      "skill": "Tool Orchestration",
+      "region": "Harrison Chase · 2022",
+      "hp": 140,
+      "difficulty": "high",
+      "link": "https://langchain.com"
+    },
+    {
+      "name": "ChromaDB",
+      "icon": "🔮",
+      "category": "rag",
+      "description": "高效能的開源向量資料庫",
+      "skill": "Vector Search",
+      "region": "Chroma · 2022",
+      "hp": 120,
+      "difficulty": "mid",
+      "link": "https://trychroma.com"
+    },
+    {
+      "name": "GPT-4o",
+      "icon": "⚡",
+      "category": "gen",
+      "description": "強大的多模態大型語言模型",
+      "skill": "Omni Generation",
+      "region": "OpenAI · 2024",
+      "hp": 150,
+      "difficulty": "high",
+      "link": "https://openai.com"
+    },
+    {
+      "name": "Gemini Pro",
+      "icon": "💎",
+      "category": "gen",
+      "description": "具備原生多模態能力的強大 AI",
+      "skill": "Multimodal Reasoning",
+      "region": "Google · 2023",
+      "hp": 130,
+      "difficulty": "mid",
+      "link": "https://deepmind.google/technologies/gemini/"
+    },
+    {
+      "name": "Hugging Face Transformers",
+      "icon": "🤗",
+      "category": "ml",
+      "description": "開源機器學習模型的集散地與套件",
+      "skill": "Model Fine-tuning",
+      "region": "Hugging Face · 2020",
+      "hp": 110,
+      "difficulty": "mid",
+      "link": "https://huggingface.co"
+    },
+    {
+      "name": "LlamaIndex",
+      "icon": "🦙",
+      "category": "rag",
+      "description": "連接 LLM 與私人資料的資料框架",
+      "skill": "Data Ingestion & Querying",
+      "region": "Jerry Liu · 2022",
+      "hp": 130,
+      "difficulty": "mid",
+      "link": "https://www.llamaindex.ai"
+    },
+    {
+      "name": "Prompt Flow",
+      "icon": "⚙️",
+      "category": "auto",
+      "description": "視覺化且可擴展的 LLM 應用開發工具",
+      "skill": "Workflow Automation",
+      "region": "Microsoft · 2023",
+      "hp": 90,
+      "difficulty": "low",
+      "link": "https://microsoft.github.io/promptflow/"
+    },
+    {
+      "name": "Guardrails AI",
+      "icon": "🛡️",
+      "category": "safety",
+      "description": "為大型語言模型加上安全護欄的框架",
+      "skill": "Output Validation",
+      "region": "Guardrails AI · 2023",
+      "hp": 100,
+      "difficulty": "low",
+      "link": "https://www.guardrailsai.com"
+    }
+  ]
+}

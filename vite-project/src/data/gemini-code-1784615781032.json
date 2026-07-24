@@ -1,0 +1,304 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "你是教練，球隊連續 3 場輸球。隊長說「繼續用老戰術，穩一點」，但你發現對手已完全研究透你們。你會？",
+      "prompt": "提示：改變的勇氣，客觀事實顯示舊方法已失效。",
+      "choices": [
+        "A. 換新戰術，同時向隊員說明為什麼現在必須改變",
+        "B. 再觀察一場，看老戰術還有沒有機會",
+        "C. 換戰術但不解釋，直接要求隊員執行",
+        "D. 尊重隊長意見，穩定優先"
+      ],
+      "correct": 0,
+      "category": "Management",
+      "emoji": "⚽",
+      "explanation": "最佳解必須同時解決「戰術錯誤」與「團隊心態」。主動說明「為什麼必須改變」，能化解團隊疑慮並降低反彈阻力。"
+    },
+    {
+      "id": 2,
+      "text": "你聽說有套 AI 分析系統可預測對手跑位，但球隊從沒用過這類工具。你是總監，你會？",
+      "prompt": "提示：導入新工具，需兼顧創新與風險最小化。",
+      "choices": [
+        "A. 等其他球隊都用了再跟進",
+        "B. 直接全隊導入，要做就做徹底",
+        "C. 先小規模試用在一場友誼賽，驗證後再決定全面導入",
+        "D. 先請外部顧問評估半年再決定"
+      ],
+      "correct": 2,
+      "category": "Innovation",
+      "emoji": "🛠️",
+      "explanation": "透過小規模的「概念驗證 (PoC)」，能有效評估系統準確度，避免「大爆炸式」全面導入可能造成的營運災難與反彈。"
+    },
+    {
+      "id": 3,
+      "text": "新加入的年輕球員提出從沒人用的進攻套路，資深隊員覺得「太冒險」。你是隊長，你會？",
+      "prompt": "提示：支持新想法，需要提供安全的驗證環境。",
+      "choices": [
+        "A. 在練習中安排時間讓他實際演練，讓大家看到可能性",
+        "B. 支持他的想法，但告訴他等時機成熟再提",
+        "C. 尊重多數資深隊員意見，暫時不採用",
+        "D. 讓教練來決定，自己不表態"
+      ],
+      "correct": 0,
+      "category": "Leadership",
+      "emoji": "💡",
+      "explanation": "提供容錯率高的測試環境（沙盒驗證），用實際演練的「結果」來打破經驗偏見，是建立團隊創新文化的最佳方法。"
+    },
+    {
+      "id": 4,
+      "text": "上半場結束，落後 2 球，賽前策略完全被對方破解。中場休息只有 15 分鐘，你會？",
+      "prompt": "提示：快速調整，資源與時間極度有限。",
+      "choices": [
+        "A. 整套策略重來，全部換掉",
+        "B. 找出對方破解我們的關鍵點，針對性調整一個環節",
+        "C. 繼續執行原本策略，下半場看隊員發揮",
+        "D. 專注鼓勵隊員士氣，策略次之"
+      ],
+      "correct": 1,
+      "category": "Crisis",
+      "emoji": "⏱️",
+      "explanation": "在極短時間內，最有效的方式是進行根本原因分析，找出導致失血最嚴重的「關鍵點」進行針對性微調，避免超出團隊的執行負荷。"
+    },
+    {
+      "id": 5,
+      "text": "新陣型需要前中後衛高度默契，但三組各自訓練，配合一直出問題。根本原因最可能是？",
+      "prompt": "提示：跨組協作的最大挑戰通常在於認知落差。",
+      "choices": [
+        "A. 練習場次不夠多",
+        "B. 球員個人技術還不夠好",
+        "C. 陣型本身設計有問題",
+        "D. 三組人對這個陣型要達成的目標理解不一樣"
+      ],
+      "correct": 3,
+      "category": "Collaboration",
+      "emoji": "🤝",
+      "explanation": "各自為政會產生「穀倉效應」。如果各組對戰略目標沒有共識（認知落差），系統或流程交接點就容易失靈。"
+    },
+    {
+      "id": 6,
+      "text": "今年冠軍隊靠全新打法稱霸，所有球隊開始模仿。助理教練建議你們跟進，你會？",
+      "prompt": "提示：學習與模仿，不能只是盲目複製貼上。",
+      "choices": [
+        "A. 研究這套打法的邏輯，評估是否符合我們球員特性再決定",
+        "B. 立刻跟進，冠軍的方法不會錯",
+        "C. 不跟，我們要走自己的路",
+        "D. 等其他球隊試過結果再說"
+      ],
+      "correct": 0,
+      "category": "Strategy",
+      "emoji": "🏆",
+      "explanation": "標竿學習必須先拆解底層邏輯，並嚴謹盤點自身環境與資源的適配性，確認匹配後再進行內化與微調。"
+    },
+    {
+      "id": 7,
+      "text": "新訓練科技效果驚人但只有少數球隊試過，賽季還有 6 週，你會？",
+      "prompt": "提示：押注新科技，需兼顧營運穩定與技術驗證。",
+      "choices": [
+        "A. 全隊立刻導入，搶先機",
+        "B. 等賽季結束再評估，現在不能冒險",
+        "C. 讓 2-3 名球員試用，6 週後根據數據決定是否全隊導入",
+        "D. 效果太好可能有問題，先不碰"
+      ],
+      "correct": 2,
+      "category": "Agile",
+      "emoji": "🧪",
+      "explanation": "在關鍵營運衝刺期，採取先導測試並根據「客觀數據」決策，能有效將風險限縮，並在擁抱創新與維持穩定間取得平衡。"
+    },
+    {
+      "id": 8,
+      "text": "球團給了你一筆預算要讓球隊「全面創新升級」，你第一步？",
+      "prompt": "提示：資源分配，符合木桶理論的核心概念。",
+      "choices": [
+        "A. 全面同步升級，不能有短板",
+        "B. 找出最影響勝敗的弱點，從那裡開始",
+        "C. 強化已最強的環節，擴大領先優勢",
+        "D. 參考業界最新趨勢往那個方向走"
+      ],
+      "correct": 1,
+      "category": "Resource",
+      "emoji": "💰",
+      "explanation": "整體表現往往受限於最弱的一環。精準投入資源解決「最致命的瓶頸」，能帶來最高且最立竿見影的投資報酬率 (ROI)。"
+    },
+    {
+      "id": 9,
+      "text": "【混沌文字獸】主管丟給你 50 頁的會議逐字稿，要你 1 小時內整理成 5 點摘要 + 行動清單。該用哪一種 AI 能力來解決？",
+      "prompt": "提示：50 頁逐字稿塞滿雜訊，你需要有明確格式的濃縮報告。",
+      "choices": [
+        "A. 報告/信件草稿",
+        "B. 問答對話",
+        "C. 結構化摘要",
+        "D. 生成圖像"
+      ],
+      "correct": 2,
+      "category": "GenAI",
+      "emoji": "📑",
+      "explanation": "生成式 AI 的強大之處在於處理海量文本。使用「結構化摘要」能強迫 AI 將抓取到的重點，精準填入指定的框架格式中。"
+    },
+    {
+      "id": 10,
+      "text": "【多步驟迷宮獸】老闆要你研究 10 家競品、上他們官網抓價格、整理成比較表，並且每週自動更新。該用哪一種 AI 能力來解決？",
+      "prompt": "提示：任務包含定義目標、爬蟲、清理資料與排程。",
+      "choices": [
+        "A. 規劃執行 (AI Agent)",
+        "B. 結構化摘要",
+        "C. 引用回答 (RAG)",
+        "D. 問答對話"
+      ],
+      "correct": 0,
+      "category": "Agent",
+      "emoji": "🧩",
+      "explanation": "AI Agent 具備「任務拆解規劃」與「調用外部工具」的能力，能處理這類多步驟且需自主執行的複雜自動化任務。"
+    },
+    {
+      "id": 11,
+      "text": "【重複勞動獸】你每週要手動把表單資料複製到 Excel，再寄 Email 通知給三個人，重複做 50 次。該用哪一種 AI 能力？",
+      "prompt": "提示：打破不同軟體之間的資訊孤島。",
+      "choices": [
+        "A. 系統串接",
+        "B. 自主瀏覽",
+        "C. 結搆化摘要",
+        "D. 問答對話"
+      ],
+      "correct": 0,
+      "category": "Automation",
+      "emoji": "🔄",
+      "explanation": "透過系統串接（如 API 連接器），能讓彼此獨立的平台自動化交換數據，徹底消除人工複製貼上的低價值重複勞動。"
+    },
+    {
+      "id": 12,
+      "text": "【幻覺資訊獸】客戶問你公司 200 頁的產品手冊裡有沒有保固條款，你需要快速找到原文並引用回答。該用哪一種 AI 能力？",
+      "prompt": "提示：亂猜有營運風險，必須要有憑有據地溯源。",
+      "choices": [
+        "A. 報告/信件草稿",
+        "B. 引用回答 (RAG)",
+        "C. 多語翻譯",
+        "D. 無源回答"
+      ],
+      "correct": 1,
+      "category": "RAG",
+      "emoji": "🔍",
+      "explanation": "RAG（檢索增強生成）技術能強制 AI 基於檢索到的企業內部文件生成答案，並標示資料來源，杜絕幻覺以確保商業回覆的可信度。"
+    },
+    {
+      "id": 13,
+      "text": "【純文字防禦獸】行銷要你在 3 天內生出 10 張產品宣傳圖、30 秒影片廣告，還要配音。靠純文字打不出這場仗，該用哪種 AI 能力？",
+      "prompt": "提示：需要同時處理圖、影、音的需求。",
+      "choices": [
+        "A. 結構化摘要",
+        "B. 問答對話",
+        "C. 純文字輸出",
+        "D. 綜合運用生成圖像、影片與聲音能力"
+      ],
+      "correct": 3,
+      "category": "Multimodal",
+      "emoji": "🎬",
+      "explanation": "多模態 AI (Multimodal AI) 能跨越單一資料型態的限制，同時支援文生圖、文生影片與語音生成，一人即可抵上整個製作團隊。"
+    },
+    {
+      "id": 14,
+      "text": "【數據竊影獸】各部門開始自求快：有人把客戶報價單直貼免費 AI，有人私自掛全自動 Agent 撈檔。要確保資安，哪種才是安全合規的做法？",
+      "prompt": "提示：方便與安全每天在拉扯，必須避免機密外洩的紅線行為。",
+      "choices": [
+        "A. 直接貼機密問 AI",
+        "B. 走正規流程建 RAG 並將資料去識別化",
+        "C. 機密灌進公有雲 API",
+        "D. 掛全自動 Agent 撈檔"
+      ],
+      "correct": 1,
+      "category": "Security",
+      "emoji": "🛡️",
+      "explanation": "防止影子 IT 與資料外洩的防禦鐵則，是將資料透過標準化的 RAG 架構送出，並搭配去識別化處理，從源頭阻斷機敏外洩風險。"
+    }
+  ],
+  "tools": [
+    {
+      "name": "LangChain Agent",
+      "icon": "🦜",
+      "category": "agent",
+      "description": "串接多工具的 AI 代理框架",
+      "skill": "Tool Orchestration",
+      "region": "Harrison Chase · 2022",
+      "hp": 140,
+      "difficulty": "high",
+      "link": "https://langchain.com"
+    },
+    {
+      "name": "ChromaDB",
+      "icon": "🔮",
+      "category": "rag",
+      "description": "高效能的開源向量資料庫",
+      "skill": "Vector Search",
+      "region": "Chroma · 2022",
+      "hp": 120,
+      "difficulty": "mid",
+      "link": "https://trychroma.com"
+    },
+    {
+      "name": "GPT-4o",
+      "icon": "⚡",
+      "category": "gen",
+      "description": "強大的多模態大型語言模型",
+      "skill": "Omni Generation",
+      "region": "OpenAI · 2024",
+      "hp": 150,
+      "difficulty": "high",
+      "link": "https://openai.com"
+    },
+    {
+      "name": "Gemini Pro",
+      "icon": "💎",
+      "category": "gen",
+      "description": "具備原生多模態能力的強大 AI",
+      "skill": "Multimodal Reasoning",
+      "region": "Google · 2023",
+      "hp": 130,
+      "difficulty": "mid",
+      "link": "https://deepmind.google/technologies/gemini/"
+    },
+    {
+      "name": "Hugging Face Transformers",
+      "icon": "🤗",
+      "category": "ml",
+      "description": "開源機器學習模型的集散地與套件",
+      "skill": "Model Fine-tuning",
+      "region": "Hugging Face · 2020",
+      "hp": 110,
+      "difficulty": "mid",
+      "link": "https://huggingface.co"
+    },
+    {
+      "name": "LlamaIndex",
+      "icon": "🦙",
+      "category": "rag",
+      "description": "連接 LLM 與私人資料的資料框架",
+      "skill": "Data Ingestion & Querying",
+      "region": "Jerry Liu · 2022",
+      "hp": 130,
+      "difficulty": "mid",
+      "link": "https://www.llamaindex.ai"
+    },
+    {
+      "name": "Prompt Flow",
+      "icon": "⚙️",
+      "category": "auto",
+      "description": "視覺化且可擴展的 LLM 應用開發工具",
+      "skill": "Workflow Automation",
+      "region": "Microsoft · 2023",
+      "hp": 90,
+      "difficulty": "low",
+      "link": "https://microsoft.github.io/promptflow/"
+    },
+    {
+      "name": "Guardrails AI",
+      "icon": "🛡️",
+      "category": "safety",
+      "description": "為大型語言模型加上安全護欄的框架",
+      "skill": "Output Validation",
+      "region": "Guardrails AI · 2023",
+      "hp": 100,
+      "difficulty": "low",
+      "link": "https://www.guardrailsai.com"
+    }
+  ]
+}

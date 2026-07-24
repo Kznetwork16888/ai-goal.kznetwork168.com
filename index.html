@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPV 世界盃 AI 戰隊 - 互動式企業培訓遊戲</title>
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@900&display=swap');
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang TC','Microsoft JhengHei',sans-serif;background:#e8efe8;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:1.25rem 1rem;zoom:1.35}
+        @media(min-width:600px){body{zoom:1.42}}
+        @media(min-width:760px){body{zoom:1.5}}
+        @media(min-width:960px){body{zoom:1.6}}
+        @media(min-width:600px) and (max-height:900px){body{zoom:1.25}}
+        @media(min-width:600px) and (max-height:800px){body{zoom:1.1}}
+        @media(min-width:600px) and (max-height:700px){body{zoom:1.0}}
+        #app{width:100%;max-width:620px;margin:auto}
+        .header{text-align:center;margin-bottom:.9rem}
+        .header-logo{font-size:12px;font-weight:700;letter-spacing:.1em;color:#003087;text-transform:uppercase;margin-bottom:.2rem}
+        .header-title{font-size:21px;font-weight:700;color:#1a1a1a;margin-bottom:.2rem}
+        .header-sub{font-size:13px;color:#555}
+        @media(min-width:760px){
+          body{align-items:flex-start;padding:2rem 1.5rem}
+          #r3-screen{max-width:900px}
+          #r3-screen .r3-star-vertical{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+          .game-layout{display:block}
+          .field{border-radius:14px;min-height:0}
+          .qa{border-radius:10px;margin-top:.55rem;height:auto}
+          .result-wrap{grid-column:1/-1;border-radius:14px}
+          .r2b-cat-pills{grid-template-columns:1fr 1fr;gap:10px}
+        }
+        .field{background:linear-gradient(180deg,#1e7a1e 0%,#246824 50%,#1e7a1e 100%);border-radius:14px;padding:1.1rem 1.1rem .9rem;border:3px solid #1a5c1a;position:relative;overflow:hidden}
+        .field-stripe{position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(0,0,0,0.035) 0,rgba(0,0,0,0.035) 44px,transparent 44px,transparent 88px);pointer-events:none}
+        .centre-circle{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:60px;height:30px;border:1.5px solid rgba(255,255,255,0.15);border-radius:50%;pointer-events:none}
+        .sbar{display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.40);border-radius:8px;padding:.45rem .85rem;margin-bottom:.8rem}
+        .sbar-team{font-size:12px;color:#fff;font-weight:600}
+        .sbar-score{font-size:21px;font-weight:700;color:#fff;letter-spacing:3px}
+        .pips{display:flex;gap:4px;margin-bottom:.7rem}
+        .pip{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.2);transition:background .3s}
+        .pip.ok{background:#5DCAA5}.pip.ko{background:#F09595}.pip.cur{background:#fff}
+        .goal-wrap{display:flex;justify-content:center;margin-bottom:.3rem;position:relative;height:78px}
+        .pitch-spacer{height:140px;width:100%}
+        .goal-post{width:180px;height:74px;border:3.5px solid #fff;border-bottom:none;border-radius:2px 2px 0 0;position:relative;background:rgba(255,255,255,0.05);overflow:visible}
+        .net{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.14) 0,rgba(255,255,255,0.14) 1px,transparent 1px,transparent 16px),repeating-linear-gradient(90deg,rgba(255,255,255,0.14) 0,rgba(255,255,255,0.14) 1px,transparent 1px,transparent 16px)}
+        .ball{font-size:26px;position:absolute;transition:all .6s cubic-bezier(.25,.46,.45,.94);z-index:10;user-select:none;pointer-events:none}
+        .goal-text{position:absolute;top:38%;left:50%;font-size:34px;font-weight:900;color:#fff;letter-spacing:2px;text-shadow:0 2px 4px rgba(0,0,0,0.4),0 0 18px rgba(255,221,0,0.6);z-index:20;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(0.4) rotate(-6deg);font-family:inherit;text-transform:uppercase;-webkit-text-stroke:1.5px #ff8c00;white-space:nowrap}
+        .goal-text.zh-font{font-family:'Noto Sans TC',sans-serif;letter-spacing:6px;text-transform:none;-webkit-text-stroke:1px #ff8c00}
+        .goal-text.show{animation:goalPop 1.1s cubic-bezier(.25,.6,.3,1.4) forwards}
+        @keyframes goalPop{
+          0%{opacity:0;transform:translate(-50%,-50%) scale(0.3) rotate(-10deg)}
+          18%{opacity:1;transform:translate(-50%,-50%) scale(1.25) rotate(4deg)}
+          32%{transform:translate(-50%,-50%) scale(0.95) rotate(-2deg)}
+          45%{transform:translate(-50%,-50%) scale(1.08) rotate(1deg)}
+          60%{transform:translate(-50%,-50%) scale(1) rotate(0deg)}
+          82%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0deg)}
+          100%{opacity:0;transform:translate(-50%,-50%) scale(1.15) rotate(0deg)}
+        }
+        .r1-screen{max-width:620px;margin:0 auto;padding:1.25rem 1rem}
+        .header{text-align:center;margin-bottom:.9rem}
+        .header-logo{font-size:12px;font-weight:700;letter-spacing:.1em;color:#003087;text-transform:uppercase;margin-bottom:.2rem}
+        .header-title{font-size:21px;font-weight:700;color:#1a1a1a;margin-bottom:.2rem}
+        .header-sub{font-size:13px;color:#555}
+        .field{background:linear-gradient(180deg,#1e7a1e 0%,#246824 50%,#1e7a1e 100%);border-radius:14px;padding:1.1rem 1.1rem .9rem;border:3px solid #1a5c1a;position:relative;overflow:hidden}
+        .field-stripe{position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(0,0,0,0.035) 0,rgba(0,0,0,0.035) 44px,transparent 44px,transparent 88px);pointer-events:none}
+        .centre-circle{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:60px;height:30px;border:1.5px solid rgba(255,255,255,0.15);border-radius:50%;pointer-events:none}
+        .sbar{display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.40);border-radius:8px;padding:.45rem .85rem;margin-bottom:.8rem}
+        .sbar-team{font-size:12px;color:#fff;font-weight:600}
+        .sbar-score{font-size:21px;font-weight:700;color:#fff;letter-spacing:3px}
+        .pips{display:flex;gap:4px;margin-bottom:.7rem}
+        .pip{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.2);transition:background .3s}
+        .pip.ok{background:#5DCAA5}.pip.ko{background:#F09595}.pip.cur{background:#fff}
+        .goal-wrap{display:flex;justify-content:center;margin-bottom:.3rem;position:relative;height:78px}
+        .pitch-spacer{height:140px;width:100%}
+        .goal-post{width:180px;height:74px;border:3.5px solid #fff;border-bottom:none;border-radius:2px 2px 0 0;position:relative;background:rgba(255,255,255,0.05);overflow:visible}
+        .net{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.14) 0,rgba(255,255,255,0.14) 1px,transparent 1px,transparent 16px),repeating-linear-gradient(90deg,rgba(255,255,255,0.14) 0,rgba(255,255,255,0.14) 1px,transparent 1px,transparent 16px)}
+        .ball{font-size:26px;position:absolute;transition:all .6s cubic-bezier(.25,.46,.45,.94);z-index:10;user-select:none;pointer-events:none}
+        .goal-text{position:absolute;top:38%;left:50%;font-size:34px;font-weight:900;color:#fff;letter-spacing:2px;text-shadow:0 2px 4px rgba(0,0,0,0.4),0 0 18px rgba(255,221,0,0.6);z-index:20;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(0.4) rotate(-6deg);font-family:inherit;text-transform:uppercase;-webkit-text-stroke:1.5px #ff8c00;white-space:nowrap}
+        .goal-text.zh-font{font-family:'Noto Sans TC',sans-serif;letter-spacing:6px;text-transform:none;-webkit-text-stroke:1px #ff8c00}
+        .goal-text.show{animation:goalPop 1.1s cubic-bezier(.25,.6,.3,1.4) forwards}
+        .runners{position:absolute;bottom:4px;left:0;right:0;height:26px;pointer-events:none;overflow:hidden}
+        .player-wrap{position:absolute;width:90px;height:100px;pointer-events:none;z-index:5}
+        .player-svg{overflow:visible;transition:transform .15s}
+        @keyframes kickLeg{0%{transform:rotate(0deg)}20%{transform:rotate(15deg)}55%{transform:rotate(-55deg)}80%{transform:rotate(-20deg)}100%{transform:rotate(0deg)}}
+        @keyframes kickBody{0%{transform:translateY(0) rotate(0deg)}40%{transform:translateY(-5px) rotate(-8deg)}100%{transform:translateY(0) rotate(0deg)}}
+        @keyframes celebrate{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-12px) rotate(-8deg)}75%{transform:translateY(-12px) rotate(8deg)}}
+        @keyframes slump{0%{transform:rotate(0deg)}50%{transform:rotate(12deg)}100%{transform:rotate(6deg)}}
+        .player-svg.kicking #player-body{animation:kickBody .5s ease-out forwards}
+        .player-svg.kicking #player-kick-leg{animation:kickLeg .5s ease-out forwards;transform-origin:45px 57px !important}
+        .player-svg.celebrating{animation:celebrate .6s ease-in-out 2}
+        .player-svg.slumping #player-body{animation:slump .5s ease-out forwards;transform-origin:50% 100%}
+        .qa{background:rgba(255,255,255,0.97);border-radius:10px;padding:.9rem 1rem;margin-top:.45rem}
+        .q-cat{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:.2rem}
+        .q-text{font-size:14.5px;font-weight:600;color:#1a1a1a;margin-bottom:.75rem;line-height:1.55}
+        .q-prompt{font-size:12px;font-weight:700;color:#1D9E75;background:#eafaf3;border:1px solid #bfe9d6;border-radius:8px;padding:.4rem .6rem;margin-bottom:.6rem;text-align:center;letter-spacing:.02em}
+        .choices{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+        @media(max-width:400px){.choices{grid-template-columns:1fr}}
+        .cb{background:#f6f6f6;border:1px solid #e0e0e0;border-radius:8px;padding:.48rem .65rem;font-size:12.5px;color:#1a1a1a;cursor:pointer;text-align:left;line-height:1.4;transition:background .12s,border-color .12s;font-family:inherit}
+        .cb:hover:not(:disabled){background:#fff;border-color:#aaa}
+        .cb.correct{background:#eaf3de;border-color:#639922;color:#3B6D11}
+        .cb.wrong{background:#fcebeb;border-color:#E24B4A;color:#A32D2D}
+        .cb:disabled{cursor:default}
+        .fb{font-size:12.5px;margin-top:.55rem;padding:.42rem .65rem;border-radius:8px;line-height:1.5;display:none}
+        .fb.ok{background:#eaf3de;color:#3B6D11}.fb.ko{background:#fcebeb;color:#A32D2D}
+        .next-btn{margin-top:.65rem;width:100%;padding:.5rem;font-size:13.5px;font-weight:600;border-radius:8px;background:#1D9E75;border:none;color:#fff;cursor:pointer;display:none;font-family:inherit}
+        .next-btn:hover{background:#0F6E56}
+        .result-wrap{background:rgba(255,255,255,0.97);border-radius:14px;padding:1.25rem 1.1rem}
+        .badge-box{text-align:center;padding:.85rem;background:linear-gradient(135deg,#e1f5ee,#f0f9ff);border-radius:10px;margin-bottom:.85rem;border:1px solid #9FE1CB}
+        .badge-icon{font-size:42px;margin-bottom:.3rem}
+        .badge-title{font-size:18px;font-weight:700;color:#085041;margin-bottom:.2rem}
+        .badge-desc{font-size:13px;color:#0F6E56;line-height:1.6}
+        .stat-row{display:flex;gap:8px;margin-bottom:.85rem}
+        .stat-card{flex:1;background:#f5f5f5;border-radius:8px;padding:.6rem .75rem;text-align:center}
+        .stat-num{font-size:22px;font-weight:700;color:#1D9E75}
+        .stat-label{font-size:11px;color:#888;margin-top:2px}
+        .r2-field{background:linear-gradient(180deg,#1e7a1e 0%,#246824 50%,#1e7a1e 100%);border-radius:14px;padding:1.1rem 1rem 1.25rem;border:3px solid #1a5c1a;position:relative;overflow:hidden}
+        .r2-field-stripe{position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(0,0,0,0.03) 0,rgba(0,0,0,0.03) 44px,transparent 44px,transparent 88px);pointer-events:none}
+        .r2-header{background:rgba(0,0,0,0.38);border-radius:10px;padding:.7rem 1rem;margin-bottom:.9rem;text-align:center;position:relative;z-index:1}
+        .r2-badge-pill{display:inline-block;background:#f0b429;color:#7a5000;font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:20px;text-transform:uppercase;margin-bottom:.3rem}
+        .r2-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.04em;margin-bottom:.15rem}
+        .r2-sub{font-size:11px;color:rgba(255,255,255,0.7)}
+        .tools-grid2{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;position:relative;z-index:1}
+        .tool-card2{background:rgba(255,255,255,0.95);border-radius:10px;padding:.6rem .7rem;display:flex;align-items:flex-start;gap:.5rem}
+        .tool-icon2{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+        .tool-rank2{font-size:9px;font-weight:700;color:#888;letter-spacing:.04em;text-transform:uppercase;margin-bottom:.1rem}
+        .tool-name2{font-size:12.5px;font-weight:700;color:#1a1a1a;margin-bottom:.18rem}
+        .tool-tag2{font-size:10px;color:#0F6E56;font-weight:600;margin-bottom:.15rem}
+        .tool-desc2{font-size:10px;color:#555;line-height:1.4}
+        .tool-link-btn{display:inline-block;font-size:9px;font-weight:700;color:#1D9E75;background:#e8f5f0;border:1px solid #a8dcc8;border-radius:20px;padding:2px 9px;text-decoration:none;letter-spacing:.03em;transition:background .12s}
+        .tool-link-btn:hover{background:#c8eed8}
+        .r2-cta-wrap{margin-top:.85rem;text-align:center;position:relative;z-index:1}
+        .r2-cta{width:100%;padding:.55rem;font-size:13.5px;font-weight:700;border-radius:8px;background:#f0b429;border:none;color:#7a5000;cursor:pointer;font-family:inherit;letter-spacing:.03em}
+        .r2-cta:hover{background:#e6a800}
+        .r2-source{font-size:10px;color:rgba(255,255,255,0.55);margin-top:.5rem}
+        .situation-card{background:linear-gradient(135deg,#0d1f3a,#1a2d4a);border:1px solid rgba(255,200,50,0.25);border-radius:12px;padding:.8rem .95rem;margin-bottom:.55rem;position:relative;overflow:hidden;animation:cardSlideIn .3s ease}
+        .situation-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f0b429,#ff6b35,#f0b429)}
+        .sc-eyebrow{font-size:9px;font-weight:700;letter-spacing:.12em;color:rgba(255,200,50,0.75);text-transform:uppercase;margin-bottom:.2rem}
+        .sc-situation{font-size:16px;font-weight:800;color:#fff;margin-bottom:.35rem;line-height:1.3}
+        .sc-desc{font-size:12.5px;color:rgba(255,255,255,.82);line-height:1.6}
+        .sc-tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:.4rem}
+        .sc-tag-high{background:rgba(229,57,53,.25);color:#ff8a80}
+        .sc-tag-mid{background:rgba(240,180,41,.18);color:#f0b429}
+        .sc-tag-low{background:rgba(29,158,117,.18);color:#5DCAA5}
+        .hand-label{font-size:10px;font-weight:700;letter-spacing:.06em;color:#666;text-transform:uppercase;margin-bottom:.4rem}
+        .hand-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:.5rem}
+        .hand-card{background:#fff;border:1.5px solid #e0e0e0;border-radius:10px;padding:.4rem .3rem;cursor:pointer;text-align:center;transition:all .15s;position:relative;user-select:none}
+        .hand-card:hover{border-color:#1D9E75;background:#f0faf6;transform:translateY(-2px)}
+        .hand-card.in-play{border-color:#1D9E75;background:#e1f5ee}
+        .hand-card.in-play::after{content:'✓';position:absolute;top:2px;right:4px;font-size:9px;color:#1D9E75;font-weight:800}
+        .hc-icon{font-size:22px;line-height:1;margin-bottom:2px}
+        .hc-name{font-size:9px;font-weight:700;color:#1a1a1a;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .hc-skill{font-size:8px;color:#888;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .tool-choices{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.55rem}
+        .tcb{background:rgba(255,255,255,0.92);border:2px solid transparent;border-radius:9px;padding:.45rem .6rem;font-size:11.5px;color:#1a1a1a;cursor:pointer;text-align:left;line-height:1.3;transition:all .12s;font-family:inherit;display:flex;align-items:center;gap:6px}
+        .tcb:hover{background:#fff;border-color:#aaa}
+        .tcb.selected{background:#e1f5ee;border-color:#1D9E75;color:#085041}
+        .tcb .tick{width:14px;height:14px;border-radius:3px;border:1.5px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;background:#fff;transition:all .1s}
+        .tcb.selected .tick{background:#1D9E75;border-color:#1D9E75;color:#fff}
+        .tcb-name{font-weight:600}
+        .tcb-tag{font-size:9.5px;color:#888;display:block}
+        .tcb.selected .tcb-tag{color:#0F6E56}
+        .other-tool-wrap{background:#f0f9f5;border:1px solid #c8edd9;border-radius:9px;padding:.55rem .7rem;margin-bottom:.55rem}
+        .other-tool-label{font-size:10.5px;color:#444;font-weight:600;margin-bottom:.35rem}
+        .other-tool-input{width:100%;background:rgba(255,255,255,0.95);border:1.5px solid rgba(255,255,255,0.4);border-radius:7px;padding:.4rem .6rem;font-size:12px;font-family:inherit;color:#1a1a1a;box-sizing:border-box;outline:none}
+        .other-tool-input:focus{border-color:#5DCAA5}
+        .other-tool-input::placeholder{color:#bbb}
+        .r2-next-btn{width:100%;padding:.52rem;font-size:13.5px;font-weight:600;border-radius:8px;background:#1D9E75;border:none;color:#fff;cursor:pointer;font-family:inherit}
+        .r2-next-btn:hover{background:#0F6E56}
+        .r2-next-btn:disabled{background:#aaa;cursor:default}
+        .dual-badge-row{display:flex;gap:8px;margin-bottom:.85rem}
+        .dual-badge-box{flex:1;text-align:center;padding:.75rem .5rem;background:linear-gradient(135deg,#e1f5ee,#f0f9ff);border-radius:10px;border:1px solid #9FE1CB}
+        .dual-badge-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0F6E56;margin-bottom:.3rem}
+        .dual-badge-icon{font-size:36px;margin-bottom:.25rem}
+        .dual-badge-title{font-size:13.5px;font-weight:700;color:#085041;margin-bottom:.15rem}
+        .dual-badge-desc{font-size:11px;color:#0F6E56;line-height:1.5}
+        .dual-connector{font-size:18px;align-self:center;color:#1D9E75;flex-shrink:0}
+        .r2-tool-result{background:#f5f5f5;border-radius:10px;padding:.75rem .9rem;margin-bottom:.75rem}
+        .r2-tool-result-title{font-size:12px;font-weight:700;color:#444;margin-bottom:.55rem}
+        .tool-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:.35rem}
+        .tool-bar-name{font-size:11.5px;color:#333;width:80px;flex-shrink:0}
+        .tool-bar-bg{flex:1;background:#e0e0e0;border-radius:20px;height:8px;overflow:hidden}
+        .tool-bar-fill{height:8px;border-radius:20px;background:linear-gradient(90deg,#1D9E75,#5DCAA5);transition:width 1s ease;width:0%}
+        .tool-bar-count{font-size:11px;color:#888;width:20px;text-align:right;flex-shrink:0}
+        .secret-weapons{background:#fff8e1;border-radius:10px;padding:.75rem .9rem;margin-bottom:.75rem;border:1px solid #f0b429}
+        .secret-weapons-title{font-size:12px;font-weight:700;color:#7a5000;margin-bottom:.45rem}
+        .secret-weapon-tag{display:inline-block;background:#f0b429;color:#7a5000;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin:2px 3px}
+        .formation-wrap{background:linear-gradient(180deg,#1e7a1e 0%,#246824 50%,#1e7a1e 100%);border-radius:10px;padding:.75rem;margin-bottom:.75rem;position:relative;overflow:hidden}
+        .formation-stripe{position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(0,0,0,0.04) 0,rgba(0,0,0,0.04) 30px,transparent 30px,transparent 60px);pointer-events:none}
+        .formation-title{font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);text-align:center;margin-bottom:.6rem;position:relative;z-index:1}
+        .r3-steps-bar{display:flex;align-items:center;gap:.4rem;background:rgba(0,0,0,0.35);border-radius:10px;padding:.45rem .75rem;margin-top:.1rem;position:relative;z-index:3}
+        .r3-step-item{display:flex;align-items:center;gap:.4rem;flex:1}
+        .r3-step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;line-height:1}
+        .r3-step-txt{font-size:10.5px;font-weight:700;line-height:1.2}
+        .r3-step-active .r3-step-num{background:#f0b429;color:#7a5000}
+        .r3-step-active .r3-step-txt{color:#fff}
+        .r3-step-locked .r3-step-num{background:rgba(255,255,255,0.18);color:rgba(255,255,255,0.45)}
+        .r3-step-locked .r3-step-txt{color:rgba(255,255,255,0.45)}
+        .r3-step-done .r3-step-num{background:#1D9E75;color:#fff}
+        .r3-step-done .r3-step-txt{color:rgba(255,255,255,0.75)}
+        .r3-step-item.attn .r3-step-num{animation:r3StepNumAttn 1.1s ease-in-out infinite}
+        @keyframes r3StepNumAttn{0%,100%{box-shadow:0 0 0 0 rgba(240,180,41,0);transform:scale(1)}50%{box-shadow:0 0 0 6px rgba(240,180,41,0.45);transform:scale(1.14)}}
+        .r3-step-item.attn .r3-step-txt{animation:r3StepTxtAttn 1.1s ease-in-out infinite}
+        @keyframes r3StepTxtAttn{0%,100%{opacity:1}50%{opacity:.5}}
+        @media(prefers-reduced-motion:reduce){.r3-step-item.attn .r3-step-num{animation:none;box-shadow:0 0 0 4px rgba(240,180,41,0.5)}.r3-step-item.attn .r3-step-txt{animation:none}}
+        .r3-step-card{background:#fff;border-radius:14px;padding:1rem 1rem 1rem;margin:.55rem 0 0;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+        .r3-qcard-header{display:flex;gap:.6rem;align-items:flex-start;margin-bottom:.85rem;padding-bottom:.75rem;border-bottom:2px solid #f0f0f0}
+        .r3-qcard-mic{font-size:22px;line-height:1;flex-shrink:0;margin-top:1px}
+        .r3-qcard-meta{flex:1;min-width:0}
+        .r3-qcard-label{font-size:9.5px;font-weight:800;color:#f0b429;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem}
+        .r3-qcard-question{font-size:13.5px;font-weight:700;color:#1a1a1a;line-height:1.5}
+        .r3-star-vertical{display:flex;flex-direction:column;gap:.65rem}
+        .r3-sv-field{background:#fafafa;border-radius:10px;padding:.6rem .75rem .5rem;border:1.5px solid #ececec;transition:border-color .2s}
+        .r3-sv-field:focus-within{border-color:#1D9E75;background:#f7fdf9}
+        .r3-sv-header{display:flex;align-items:flex-start;gap:.55rem;margin-bottom:.45rem}
+        .r3-sv-badge{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;line-height:1}
+        .r3-sv-s{background:#1D9E75}.r3-sv-t{background:#f0b429}.r3-sv-a{background:#3d7eff}.r3-sv-r{background:#e0533a}
+        .r3-sv-title{font-size:12px;font-weight:800;color:#1a1a1a;margin-bottom:.15rem}
+        .r3-sv-hint{font-size:11px;color:#777;line-height:1.45}
+        .r3-sv-textarea{width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:.5rem .65rem;font-size:13px;font-family:inherit;color:#1a1a1a;background:#fff;resize:none;line-height:1.5;transition:border-color .15s,box-shadow:.15s;box-sizing:border-box;margin-top:.1rem}
+        .r3-sv-textarea:focus{outline:none;border-color:#1D9E75;box-shadow:0 0 0 3px rgba(29,158,117,0.1)}
+        .r3-sv-textarea::placeholder{color:#c0c0c0}
+        .r3-sv-char{font-size:10px;color:#c0c0c0;text-align:right;margin-top:3px}
+        .r3-step1-hint{text-align:center;font-size:11.5px;color:#aaa;margin-top:.7rem;padding:.4rem .5rem;border-radius:8px;background:#f5f5f5;line-height:1.4}
+        .r3-step1-hint.ready{background:#e8f5f0;color:#0F6E56;font-weight:600}
+        .r3-step2-divider{display:flex;align-items:center;justify-content:center;margin:.85rem 0 .55rem}
+        .r3-step2-badge{display:flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#1D9E75,#0F6E56);border-radius:20px;padding:.35rem .85rem .35rem .55rem;box-shadow:0 2px 10px rgba(29,158,117,0.3)}
+        .r3-step2-num{width:22px;height:22px;border-radius:50%;background:#fff;color:#0F6E56;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .r3-step2-badge span:last-child{font-size:12px;font-weight:700;color:#fff;letter-spacing:.02em}
+        #r3-draw-section{transition:opacity .4s ease,transform .4s ease}
+        #r3-draw-section.locked{opacity:.7}
+        #r3-draw-section.unlocked{opacity:1;animation:r3DrawUnlock .5s ease}
+        @keyframes r3DrawUnlock{from{transform:translateY(8px);opacity:.5}to{transform:translateY(0);opacity:1}}
+        .formation-pitch{position:relative;width:100%;height:240px;background:linear-gradient(180deg,#1a6b1a 0%,#1e7a1e 30%,#208020 60%,#1e7a1e 100%);border-radius:8px;overflow:hidden;margin-bottom:.2rem;border:2px solid rgba(255,255,255,0.2)}
+        .formation-pitch::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(0,0,0,0.02) 0,rgba(0,0,0,0.02) 25px,transparent 25px,transparent 50px);pointer-events:none}
+        /* Center circle */
+        .formation-pitch .fp-circle{position:absolute;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:60px;height:60px;border:1.5px solid rgba(255,255,255,0.35);border-radius:50%}
+        .formation-pitch .fp-circle-dot{position:absolute;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:4px;height:4px;background:rgba(255,255,255,0.35);border-radius:50%}
+        /* Center line */
+        .formation-pitch .fp-halfline{position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,0.2)}
+        /* Penalty areas */
+        .formation-pitch .fp-box{position:absolute;left:50%;transform:translateX(-50%);width:60%;height:44px;border:1.5px solid rgba(255,255,255,0.2);border-radius:2px}
+        .formation-pitch .fp-box.top{top:6px;border-bottom:none}
+        .formation-pitch .fp-box.bot{bottom:6px;border-top:none}
+        /* Position players */
+        .fp-player-slot{position:absolute;text-align:center;z-index:3;transform:translate(-50%, -50%)}
+        .fp-player-icon{font-size:22px;line-height:1;margin-bottom:1px}
+        .fp-player-name{font-size:8.5px;font-weight:700;color:#fff;line-height:1.2;background:rgba(0,0,0,0.38);border-radius:10px;padding:1px 7px;display:inline-block;white-space:nowrap}
+        .fp-player-pos{font-size:7px;color:rgba(255,255,255,0.55);margin-top:1px;text-transform:uppercase;letter-spacing:.05em}
+        /* Position labels on sides */
+        .fp-pos-label{position:absolute;font-size:7px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:.06em;text-transform:uppercase;z-index:2}
+        @font-face{font-family:'Noto Sans TC';font-style:normal;font-weight:900;src:url('https://fonts.gstatic.com/s/notosanstc/v27/soopMoB4mKK2TvtYXjZmYg.ttf') format('truetype')}
+        body{zoom:1.35}
+    </style>
+    <div id="app">
+        <div id="lang-modal-overlay" style="position:fixed;inset:0;z-index:100000;background:rgba(0,20,60,0.65);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1.25rem;animation:lmFade .35s ease">
+            <div class="lang-modal" style="background:linear-gradient(160deg,#003087 0%,#005bbd 55%,#1D9E75 100%);border-radius:20px;padding:1.5rem 1.4rem 1.4rem;width:100%;max-width:420px;text-align:center;box-shadow:0 12px 50px rgba(0,30,90,0.45);position:relative;overflow:hidden;display:flex;flex-direction:column;max-height:100%;box-sizing:border-box;animation:lmPop .45s cubic-bezier(.2,.7,.3,1.2)">
+                <div class="lm-flag" style="font-size:30px;margin-bottom:.3rem;position:relative;z-index:1;flex:none">🌍</div>
+                <div class="lm-title" style="font-size:18px;font-weight:700;color:#fff;letter-spacing:.04em;margin-bottom:.25rem;position:relative;z-index:1;flex:none">选择语言 / Select Language</div>
+                <div class="lm-sub" style="font-size:12.5px;color:rgba(255,255,255,0.78);margin-bottom:.85rem;line-height:1.5;position:relative;z-index:1;flex:none">请选择或点击您喜欢的语言继续体验游戏</div>
+                <div class="lm-list" style="display:flex;flex-direction:column;gap:8px;position:relative;z-index:1;overflow-y:auto;min-height:0;flex:1 1 auto;padding-right:4px;margin-right:-4px">
+                    <button onclick="selectLang('zh-TW')" class="lm-btn active" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);border-radius:12px;padding:.7rem 1rem;cursor:pointer;color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;transition:all .18s;text-align:left">
+                        <span class="lm-label"><span class="lm-emoji">🇹🇼</span> 繁體中文</span>
+                        <span class="lm-check">✓</span>
+                    </button>
+                    <button onclick="selectLang('en')" class="lm-btn" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);border-radius:12px;padding:.7rem 1rem;cursor:pointer;color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;transition:all .18s;text-align:left">
+                        <span class="lm-label"><span class="lm-emoji">🇺🇸</span> English</span>
+                        <span class="lm-check" style="opacity:0">✓</span>
+                    </button>
+                    <button onclick="selectLang('zh-CN')" class="lm-btn" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);border-radius:12px;padding:.7rem 1rem;cursor:pointer;color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;transition:all .18s;text-align:left">
+                        <span class="lm-label"><span class="lm-emoji">🇨🇳</span> 简体中文</span>
+                        <span class="lm-check" style="opacity:0">✓</span>
+                    </button>
+                    <button onclick="selectLang('th')" class="lm-btn" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);border-radius:12px;padding:.7rem 1rem;cursor:pointer;color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;transition:all .18s;text-align:left">
+                        <span class="lm-label"><span class="lm-emoji">🇹🇭</span> ภาษาไทย</span>
+                        <span class="lm-check" style="opacity:0">✓</span>
+                    </button>
+                    <button onclick="selectLang('pt')" class="lm-btn" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);border-radius:12px;padding:.7rem 1rem;cursor:pointer;color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;transition:all .18s;text-align:left">
+                        <span class="lm-label"><span class="lm-emoji">🇵🇹</span> Português</span>
+                        <span class="lm-check" style="opacity:0">✓</span>
+                    </button>
+                    <button onclick="selectLang('es')" class="lm-btn" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);border-radius:12px;padding:.7rem 1rem;cursor:pointer;color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;transition:all .18s;text-align:left">
+                        <span class="lm-label"><span class="lm-emoji">🇪🇸</span> Español</span>
+                        <span class="lm-check" style="opacity:0">✓</span>
+                    </button>
+                </div>
+                <button onclick="confirmLang()" class="lm-confirm" style="margin-top:1rem;width:100%;padding:.7rem 1rem;border-radius:12px;border:none;background:#fff;color:#003087;font-family:inherit;font-size:14.5px;font-weight:700;letter-spacing:.04em;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.18);transition:all .15s;position:relative;z-index:1;flex:none">确认</button>
+                <div class="lm-hint" style="margin-top:.55rem;font-size:11px;color:rgba(255,255,255,0.6);position:relative;z-index:1;flex:none">您可以随时更改选择</div>
+            </div>
+        </div>
+
+        <div id="start-screen" style="width:100%;max-width:620px;margin:auto;display:block">
+            <div class="start-wrap" style="background:linear-gradient(160deg,#003087 0%,#005bbd 55%,#1D9E75 100%);border-radius:20px;padding:2.2rem 1.6rem 2rem;text-align:center;position:relative;overflow:hidden;box-shadow:0 8px 40px rgba(0,48,135,0.35)">
+                <div class="start-bg-circle" style="position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,0.08);pointer-events:none;width:260px;height:260px;top:-80px;right:-80px"></div>
+                <div class="start-bg-circle c2" style="position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,0.08);pointer-events:none;width:180px;height:180px;bottom:-50px;left:-50px"></div>
+                <div class="start-ball-anim" style="font-size:64px;margin-bottom:.5rem;display:block;animation:bounceBall 1.4s ease-in-out infinite">⚽</div>
+                <div class="start-logo" style="font-size:11px;font-weight:700;letter-spacing:.18em;color:rgba(255,255,255,0.6);text-transform:uppercase;margin-bottom:.6rem">TPV Group × AI World Cup</div>
+                <div class="start-title" style="font-size:26px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:.4rem">世界盃 AI 戰隊</div>
+                <div class="start-title" style="font-size:26px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:.4rem">TPV AI World Cup <span style="color:#5DCAA5">AI Team</span></div>
+                <div class="start-tagline" style="font-size:13.5px;color:rgba(255,255,255,0.8);margin-bottom:1.4rem;line-height:1.6">🏆 第一關：練習場選拔 → 🏟️ 第二關：AI 道館對決 → 🎙️ 第三關：賽後專訪</div>
+                <div class="start-cards" style="display:flex;gap:8px;justify-content:center;margin-bottom:1.6rem;flex-wrap:wrap">
+                    <div class="start-card" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);border-radius:10px;padding:.55rem .7rem;flex:1;min-width:80px;max-width:110px">
+                        <div class="start-card-icon" style="font-size:20px;margin-bottom:4px">🎯</div>
+                        <div class="start-card-label" style="font-size:10.5px;color:rgba(255,255,255,0.85);line-height:1.4">AI 知識測驗</div>
+                    </div>
+                    <div class="start-card" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);border-radius:10px;padding:.55rem .7rem;flex:1;min-width:80px;max-width:110px">
+                        <div class="start-card-icon" style="font-size:20px;margin-bottom:4px">🎮</div>
+                        <div class="start-card-label" style="font-size:10.5px;color:rgba(255,255,255,0.85);line-height:1.4">挑戰賽制</div>
+                    </div>
+                    <div class="start-card" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);border-radius:10px;padding:.55rem .7rem;flex:1;min-width:80px;max-width:110px">
+                        <div class="start-card-icon" style="font-size:20px;margin-bottom:4px">🏆</div>
+                        <div class="start-card-label" style="font-size:10.5px;color:rgba(255,255,255,0.85);line-height:1.4">抽獎體驗</div>
+                    </div>
+                </div>
+                <div class="start-lang-row" style="display:flex;gap:6px;justify-content:center;margin-bottom:1.2rem">
+                    <button onclick="selectStartLang('zh-TW')" class="start-lang-btn active" style="font-size:12px;padding:5px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);cursor:pointer;transition:all .15s;font-family:inherit">繁體中文</button>
+                    <button onclick="selectStartLang('en')" class="start-lang-btn" style="font-size:12px;padding:5px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);cursor:pointer;transition:all .15s;font-family:inherit">English</button>
+                </div>
+                <button onclick="startGame()" class="start-cta" style="width:100%;padding:.75rem 1rem;font-size:15px;font-weight:700;border-radius:12px;border:none;background:linear-gradient(90deg,#1D9E75,#5DCAA5);color:#fff;cursor:pointer;font-family:inherit;letter-spacing:.03em;box-shadow:0 4px 16px rgba(29,158,117,0.45);transition:transform .12s,box-shadow .12s">接受邀請，開始選拔 ⚽</button>
+                <div class="start-cta-sub" style="font-size:11.5px;color:rgba(255,255,255,0.5);margin-top:.55rem">约 5 分钟完成 · 三关共 14 题</div>
+                <div class="start-footer" style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:1rem">本活动由 TPV Corporate Training 主办</div>
+            </div>
+        </div>
+
+        <div id="r1-screen" style="display:none;max-width:620px;margin:auto;padding:1.25rem 1rem">
+            <div class="header">
+                <div class="header-logo">TPV Group × AI World Cup</div>
+                <div class="header-title">🏆 第一關：練習場選拔</div>
+                <div class="header-sub">8 球定生死，踢進才能晉身世界盃！</div>
+            </div>
+            <div class="field">
+                <div class="field-stripe"></div>
+                <div class="centre-circle"></div>
+                <div class="sbar">
+                    <div class="sbar-team">你的隊伍</div>
+                    <div class="sbar-score">0 : 8</div>
+                </div>
+                <div class="pips">
+                    <div class="pip cur"></div>
+                    <div class="pip"></div>
+                    <div class="pip"></div>
+                    <div class="pip"></div>
+                </div>
+                <div class="goal-wrap">
+                    <div class="goal-text" style="opacity:0;transform:translate(-50%,-50%) scale(0.4) rotate(-6deg)"></div>
+                </div>
+                <div class="pitch-spacer"></div>
+                <div class="goal-post">
+                    <div class="net"></div>
+                    <div class="ball" style="left:0%;transform:translateX(-50%)"></div>
+                </div>
+                <div class="runners">
+                    <div class="player-wrap" style="transform:translateX(0%)">
+                        <svg class="player-svg" viewBox="0 0 100 120" preserveAspectRatio="xMidYMid meet">
+                            <g id="player-body" transform="translate(50, 80)">
+                                <circle cx="0" cy="0" r="8" fill="#2c3e50" stroke="#34495e" stroke-width="2"/>
+                                <path id="player-kick-leg" d="M 0 -8 Q 20 -30 40 -8 Q 20 -5 0 -8 Z" fill="#2c3e50" stroke="#34495e" stroke-width="1"/>
+                                <path d="M -12 0 L 12 0 L 8 -10 L -8 -10 Z" fill="#2c3e50" stroke="#34495e" stroke-width="1"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="qa">
+                <div class="q-cat">ML</div>
+                <div class="q-text">什麼是機器學習？</div>
+                <div class="q-prompt">一個簡短的定義，適合用來解釋機器學習的基本概念</div>
+                <div class="choices">
+                    <button class="cb" onclick="selectAnswer(0)">A. 計算機不會學習東西</button>
+                    <button class="cb" onclick="selectAnswer(1)">B. 讓電腦從數據中學習模式</button>
+                    <button class="cb" onclick="selectAnswer(2)">C. 只使用規則來編寫代碼</button>
+                    <button class="cb" onclick="selectAnswer(3)">D. 人工智能的子領域</button>
+                </div>
+                <div class="fb" style="display:none">正確！</div>
+                <button class="next-btn" onclick="nextQuestion()" style="display:none">下一題</button>
+            </div>
+            <div class="result-wrap" style="display:none">
+                <div class="badge-box">
+                    <div class="badge-icon">🎖️</div>
+                    <div class="badge-title">恭喜通過</div>
+                    <div class="badge-desc">你通過了練習場選拔測試</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-card">
+                        <div class="stat-num">0</div>
+                        <div class="stat-label">得分</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num">0</div>
+                        <div class="stat-label">連續 goals</div>
+                    </div>
+                </div>
+                <button class="next-btn" onclick="proceedToRound2()">進入 AI 道館對決</button>
+            </div>
+        </div>
+
+        <div id="r2-screen" style="display:none;max-width:620px;margin:auto;padding:1.25rem 1rem">
+            <div class="r2-field">
+                <div class="r2-field-stripe"></div>
+                <div class="r2-header">
+                    <div class="r2-badge-pill">任務</div>
+                    <div class="r2-title">AI 道館對決</div>
+                    <div class="r2-sub">85 秒內選擇 4 個 AI 工具完成任務</div>
+                </div>
+                <div class="tools-grid2">
+                    <div class="tool-card2" onclick="selectTool(0)">
+                        <div class="tool-icon2" style="background:#f0b429;color:#7a5000">✍️</div>
+                        <div>
+                            <div class="tool-rank2">攻擊型</div>
+                            <div class="tool-name2">Prompt Engineer</div>
+                            <div class="tool-tag2">優化提示詞以獲得更佳 AI 回應</div>
+                            <div class="tool-desc2">HP: 80</div>
+                        </div>
+                    </div>
+                    <div class="tool-card2" onclick="selectTool(1)">
+                        <div class="tool-icon2" style="background:#43a047;color:#fff">🏷️</div>
+                        <div>
+                            <div class="tool-rank2">中場型</div>
+                            <div class="tool-name2">Data Annotator</div>
+                            <div class="tool-tag2">標記訓練數據以改進 AI 模型</div>
+                            <div class="tool-desc2">HP: 120</div>
+                        </div>
+                    </div>
+                    <div class="tool-card2" onclick="selectTool(2)">
+                        <div class="tool-icon2" style="background:#e53935;color:#fff">⚙️</div>
+                        <div>
+                            <div class="tool-rank2">攻擊型</div>
+                            <div class="tool-name2">Model Fine-tuner</div>
+                            <div class="tool-tag2">調整預訓練模型以適應特定領域</div>
+                            <div class="tool-desc2">HP: 150 (高難度)</div>
+                        </div>
+                    </div>
+                    <div class="tool-card2" onclick="selectTool(3)">
+                        <div class="tool-icon2" style="background:#3d7eff;color:#fff">🏗️</div>
+                        <div>
+                            <div class="tool-rank2">中場型</div>
+                            <div class="tool-name2">Prompt Architecture Designer</div>
+                            <div class="tool-tag2">設計複雜的多步提示詞流程</div>
+                            <div class="tool-desc2">HP: 90</div>
+                        </div>
+                    </div>
+                    <div class="tool-card2" onclick="selectTool(4)">
+                        <div class="tool-icon2" style="background:#5c6bc0;color:#fff">🔍</div>
+                        <div>
+                            <div class="tool-rank2">防禦型</div>
+                            <div class="tool-name2">AI Bias Auditor</div>
+                            <div class="tool-tag2">審查和糾正 AI 產生的偏見</div>
+                            <div class="tool-desc2">HP: 110 (高難度)</div>
+                        </div>
+                    </div>
+                    <div class="tool-card2" onclick="selectTool(5)">
+                        <div class="tool-icon2" style="background:#ff9800;color:#fff">⚡</div>
+                        <div>
+                            <div class="tool-rank2">攻擊型</div>
+                            <div class="tool-name2">Inference Optimizer</div>
+                            <div class="tool-tag2">提高推理速度和資源效率</div>
+                            <div class="tool-desc2">HP: 100</div>
+                        </div>
+                    </div>
+                    <div class="tool-card2" onclick="selectTool(6)">
+                        <div class="tool-icon2" style="background:#7952b3;color:#fff">📚</div>
+                        <div>
+                            <div class="tool-rank2">防禦型</div>
+                            <div class="tool-name2">Knowledge Curator</div>
+                            <div class="tool-tag2">管理 AI 模型的知識庫內容</div>
+                            <div class="tool-desc2">HP: 130</div>
+                        </div>
+                    </div>
+                    <div class="tool-card2" onclick="selectTool(7)">
+                        <div class="tool-icon2" style="background:#ff6b6b;color:#fff">🔗</div>
+                        <div>
+                            <div class="tool-rank2">中場型</div>
+                            <div class="tool-name2">API Integration Specialist</div>
+                            <div class="tool-tag2">將多種 AI 模型 API 連接到一起</div>
+                            <div class="tool-desc2">HP: 140 (高難度)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="r2-cta-wrap">
+                    <button class="r2-cta" onclick="revealAllTools()" disabled>揭開結果</button>
+                </div>
+                <div class="r2-source">資料來源：Hugging Face、GitHub 和企業案例集</div>
+            </div>
+            <div id="r2-qa" style="display:none;background:rgba(255,255,255,0.97);border-radius:0 0 10px 10px;padding:.8rem .95rem">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem">
+                    <div style="font-size:14px;font-weight:700;color:#1a1a1a">AI 陣容 (共 4 個工具)</div>
+                    <div style="font-size:12px;color:#888">可替補：<span id="remaining-tools">0</span>/4</div>
+                </div>
+                <div id="selected-tools-list" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.8rem;min-height:32px">
+                    <div style="background:#e8f5f1;border:1px solid #a8dcc8;border-radius:20px;padding:4px 12px;font-size:11px;color:#0F6E56;display:flex;align-items:center;gap:6px">
+                        <span>📚 Knowledge Curator</span>
+                        <span onclick="removeTool(0)" style="cursor:pointer;color:#aaa;font-weight:bold">×</span>
+                    </div>
+                </div>
+                <div style="margin-bottom:.6rem;font-size:11px;color:#666">請選擇其他 3 個工具完成你的 AI 戰術陣容</div>
+                <div class="tool-choices">
+                    <button class="tcb" onclick="selectToolChoice(1)">
+                        <span class="tick">✓</span>
+                        <span class="tcb-name">Data Annotator</span>
+                        <span class="tcb-tag">中場型 • HP: 120</span>
+                    </button>
+                    <button class="tcb" onclick="selectToolChoice(2)">
+                        <span class="tick">✓</span>
+                        <span class="tcb-name">Model Fine-tuner</span>
+                        <span class="tcb-tag">攻擊型 • HP: 150</span>
+                    </button>
+                    <button class="tcb" onclick="selectToolChoice(3)">
+                        <span class="tick">✓</span>
+                        <span class="tcb-name">Prompt Architecture Designer</span>
+                        <span class="tcb-tag">中場型 • HP: 90</span>
+                    </button>
+                    <button class="tcb" onclick="selectToolChoice(4)">
+                        <span class="tick">✓</span>
+                        <span class="tcb-name">AI Bias Auditor</span>
+                        <span class="tcb-tag">防禦型 • HP: 110</span>
+                    </button>
+                </div>
+                <div class="other-tool-wrap" style="display:none">
+                    <div class="other-tool-label">或者輸入你持有的其他 AI 工具名稱：</div>
+                    <input type="text" class="other-tool-input" placeholder="例：TensorFlow、ChatGPT、企業級 AI 平台..." oninput="filterTools(this.value)">
+                </div>
+                <button class="r2-next-btn" onclick="proceedToRound3()" disabled>確認出賽陣容</button>
+            </div>
+        </div>
+
+        <div id="r3-screen" style="display:none;max-width:900px;margin:0 auto;padding:1.25rem 1rem">
+            <div class="r3-steps-bar">
+                <div class="r3-step-item r3-step-done">
+                    <div class="r3-step-num">✓</div>
+                    <div class="r3-step-txt">練習場選拔</div>
+                </div>
+                <div class="r3-step-item r3-step-done">
+                    <div class="r3-step-num">✓</div>
+                    <div class="r3-step-txt">AI 道館對決</div>
+                </div>
+                <div class="r3-step-item r3-step-active attn">
+                    <div class="r3-step-num">3</div>
+                    <div class="r3-step-txt">賽後專訪</div>
+                </div>
+            </div>
+            <div class="r3-step-card">
+                <div class="r3-qcard-header">
+                    <div class="r3-qcard-mic">🎙️</div>
+                    <div class="r3-qcard-meta">
+                        <div class="r3-qcard-label">STAR 訪談框架</div>
+                        <div class="r3-qcard-question">請用 STAR 框架分享一個你打算用 AI 工具改善工作的場景</div>
+                    </div>
+                </div>
+                <div class="r3-star-vertical">
+                    <div class="r3-sv-field" onclick="focusStep(1)">
+                        <div class="r3-sv-header">
+                            <div class="r3-sv-badge r3-sv-s">S</div>
+                            <div>
+                                <div class="r3-sv-title">情境（Situation）</div>
+                                <div class="r3-sv-hint">你現在工作中哪個環節最花時間、最重複、最讓你覺得「這個不應該這麼麻煩」？</div>
+                            </div>
+                        </div>
+                        <textarea class="r3-sv-textarea" placeholder="請描述你的工作情境..." oninput="updateStarAnswer('situation', this.value)" maxlength="500"></textarea>
+                        <div class="r3-sv-char">0/5</div>
+                    </div>
+                    <div class="r3-sv-field" onclick="focusStep(2)">
+                        <div class="r3-sv-header">
+                            <div class="r3-sv-badge r3-sv-t">T</div>
+                            <div>
+                                <div class="r3-sv-title">任務（Task）</div>
+                                <div class="r3-sv-hint">這件事的目標是什麼？主管或自己期待什麼結果？</div>
+                            </div>
+                        </div>
+                        <textarea class="r3-sv-textarea" placeholder="請描述你的任務目標..." oninput="updateStarAnswer('task', this.value)" maxlength="500"></textarea>
+                        <div class="r3-sv-char">0/5</div>
+                    </div>
+                    <div class="r3-sv-field" onclick="focusStep(3)">
+                        <div class="r3-sv-header">
+                            <div class="r3-sv-badge r3-sv-a">A</div>
+                            <div>
+                                <div class="r3-sv-title">行動（Action）</div>
+                                <div class="r3-sv-hint">你打算用哪個 AI 工具、怎麼用？一句話說清楚具體做法。</div>
+                            </div>
+                        </div>
+                        <textarea class="r3-sv-textarea" placeholder="請描述你的 AI 工具應用..." oninput="updateStarAnswer('action', this.value)" maxlength="500"></textarea>
+                        <div class="r3-sv-char">0/5</div>
+                    </div>
+                    <div class="r3-sv-field" onclick="focusStep(4)">
+                        <div class="r3-sv-header">
+                            <div class="r3-sv-badge r3-sv-r">R</div>
+                            <div>
+                                <div class="r3-sv-title">成果（Result）</div>
+                                <div class="r3-sv-hint">如果成功，你期待節省多少時間、提升多少效率、或達成什麼具體改變？</div>
+                            </div>
+                        </div>
+                        <textarea class="r3-sv-textarea" placeholder="請描述你預期的成果..." oninput="updateStarAnswer('result', this.value)" maxlength="500"></textarea>
+                        <div class="r3-sv-char">0/5</div>
+                    </div>
+                </div>
+                <div class="r3-step1-hint">每格至少填 5 個字，4 格都完成即可解鎖抽獎</div>
+            </div>
+            <div id="r3-draw-section" class="locked" style="margin-top:1.5rem;padding:1rem;background:linear-gradient(135deg,#fffbea,#fff8e1);border:2px solid #f0b429;border-radius:12px;text-align:center">
+                <div style="font-size:16px;font-weight:700;color:#7a5000;margin-bottom:.5rem">🎁 AI 專訪抽獎解鎖</div>
+                <div style="font-size:14px;color:#7a5000;line-height:1.5;margin-bottom:.8rem">完成 STAR 框架填答後，您將有機會獲得 USD 50 抽獎資格！每名幸運得獎者，TPV 送出 USD 50 獎金。</div>
+                <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:.8rem">
+                    <span style="font-size:12px;color:#7a5000">輸入 Email 參加抽獎：</span>
+                    <input type="email" placeholder="your.email@company.com" style="border:2px solid rgba(255,255,255,0.35);border-radius:8px;padding:.55rem .8rem;font-size:13px;background:rgba(255,255,255,0.15);color:#7a5000;outline:none;width:200px" oninput="validateEmail(this.value)">
+                </div>
+                <button onclick="submitInterview()" style="background:#f0b429;color:#7a5000;padding:.7rem 1.5rem;border-radius:8px;border:none;font-weight:600;cursor:pointer;transition:background .15s" disabled>填寫 Email 送出抽獎</button>
+                <div id="email-error" style="color:#e53935;font-size:12px;margin-top:.5rem;display:none">請輸入有效的 Email 地址</div>
+            </div>
+        </div>
+
+        <div id="transition-screen" style="display:none;position:fixed;inset:0;z-index:9999;background:#0a0a1a;align-items:center;justify-content:flex-start;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch">
+            <div class="ts-inner" style="text-align:center;padding:2rem 1rem;margin:auto">
+                <div class="ts-trophy" style="font-size:72px;animation:trophyBounce 0.8s ease-out forwards;opacity:0">🏆</div>
+                <div class="ts-badge" style="display:inline-block;background:#f0b429;color:#7a5000;font-size:10px;font-weight:800;letter-spacing:.12em;padding:3px 12px;border-radius:20px;text-transform:uppercase;margin-bottom:.75rem;opacity:0;animation:fadeUp .4s .6s forwards">恭喜通過！</div>
+                <div class="ts-title" style="font-size:22px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:.4rem;opacity:0;animation:fadeUp .4s .8s forwards">AI 戰隊 <span style="color:#5DCAA5">總教練</span></div>
+                <div class="ts-score" style="font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:1.2rem;opacity:0;animation:fadeUp .4s 1s forwards">最終得分：85 分</div>
+                <div class="ts-divider" style="width:60px;height:2px;background:linear-gradient(90deg,transparent,#f0b429,transparent);margin:.9rem auto;opacity:0;animation:fadeUp .4s 1.1s forwards"></div>
+                <div class="ts-promote" style="font-size:16px;font-weight:700;color:#f0b429;margin-bottom:.3rem;opacity:0;animation:fadeUp .5s 1.3s forwards">你的 AI 技能一流！</div>
+                <div class="ts-sub" style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:1.5rem;opacity:0;animation:fadeUp .4s 1.5s forwards">你已獲得「世界盃 AI 戰隊總教練」頭銜</div>
+                <div class="ts-tunnel" style="font-size:32px;letter-spacing:8px;opacity:0;animation:fadeUp .4s 1.7s forwards">🏟️ 球場通道</div>
+                <div class="ts-loader" style="width:200px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;margin:1.2rem auto 0;overflow:hidden;opacity:0;animation:fadeUp .4s 1.9s forwards">
+                    <div class="ts-loader-bar" style="height:100%;background:linear-gradient(90deg,#1D9E75,#f0b429);border-radius:2px;animation:loaderFill 2.2s 2s ease-in-out forwards;width:0%"></div>
+                </div>
+                <button class="ts-continue-btn" onclick="goToInterview()" style="margin-top:.7rem;padding:.6rem 1.6rem;font-size:13px;font-weight:700;border-radius:8px;background:linear-gradient(90deg,#1D9E75,#5DCAA5);border:none;color:#fff;cursor:pointer;font-family:inherit;letter-spacing:.03em;display:none">立即開始專訪</button>
+            </div>
+        </div>
+
+        <div id="draw-result-screen" style="display:none;max-width:520px;margin:0 auto;padding:2rem 1rem;text-align:center">
+            <div style="background:linear-gradient(135deg,#003087,#005bbd);border-radius:12px;padding:1rem 1.1rem;margin-bottom:.75rem;text-align:center">
+                <div style="font-size:28px;margin-bottom:.35rem">🎉 中獎了！</div>
+                <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:.3rem">恭喜您獲得 USD 50 獎金！</div>
+                <div style="font-size:12.5px;color:rgba(255,255,255,0.85);line-height:1.6;margin-bottom:.6rem">您已成功通過 TPV AI 世界盃測試，獲得抽獎資格</div>
+                <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:.45rem .75rem;display:inline-block;margin-bottom:.4rem">
+                    <div style="font-size:13.5px;font-weight:700;color:#fff;word-break:break-all">email@example.com</div>
+                </div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.6)">活動截止日期以官方公告為準</div>
+            </div>
+            <button onclick="resetGame()" style="margin-top:1rem;padding:.6rem 1.6rem;font-size:13px;font-weight:700;border-radius:8px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.3);color:#fff;cursor:pointer;font-family:inherit;letter-spacing:.03em">再來一次</button>
+        </div>
+    </div>
+
+    <script>
+        // 遊戲資料
+        const gameData = {
+            questions: [
+                {
+                    id: 1,
+                    text: "什麼是機器學習？",
+                    prompt: "一個簡短的定義，適合用來解釋機器學習的基本概念",
+                    choices: ["A. 計算機不會學習東西", "B. 讓電腦從數據中學習模式", "C. 只使用規則來編寫代碼", "D. 人工智能的子領域"],
+                    correct: 1,
+                    category: "ML",
+                    emoji: "🤖"
+                },
+                {
+                    id: 2,
+                    text: "什麼是自然語言處理(NLP)的目標？",
+                    prompt: "NLP 的主要目標是什麼？",
+                    choices: ["A. 讓電腦理解和生成人類語言", "B. 只處理數學計算", "C. 創建圖形", "D. 控制硬件設備"],
+                    correct: 0,
+                    category: "NLP",
+                    emoji: "⚽"
+                },
+                {
+                    id: 3,
+                    text: "在電腦視覺中，哪種技術最用於檢測圖像中的對象？",
+                    prompt: "哪種電腦視覺技術最能檢測圖像中的對象？",
+                    choices: ["A. 支援向量機", "B. 卷積神經網路", "C. 隨機森林", "D. k-means聚類"],
+                    correct: 1,
+                    category: "CV",
+                    emoji: "📷"
+                },
+                {
+                    id: 4,
+                    text: "深度學習允許多個神經層訓練，哪種技術讓神經網路更有效地訓練？",
+                    prompt: "這使神經網路能夠更有效地訓練，允許多個神經層堆疊的技术是什麼？",
+                    choices: ["A. 反向傳播", "B. 正向傳播", "C. 隨機初始化", "D. 手動權重調整"],
+                    correct: 0,
+                    category: "DL",
+                    emoji: "🧠"
+                },
+                {
+                    id: 5,
+                    text: "在生成式AI中，最常用的技術是什麼？",
+                    prompt: "哪種類型的AI最用於創建新內容（如文本、圖像、音樂）？",
+                    choices: ["A. 生成式AI", "B. 監督式學習", "C. 無監督式學習", "D. 強化學習"],
+                    correct: 0,
+                    category: "AI",
+                    emoji: "✨"
+                }
+            ],
+            tools: [
+                {
+                    id: "tool-1",
+                    name: "Prompt Engineer",
+                    category: "attack",
+                    hp: 80,
+                    description: "優化提示詞以獲得更佳AI回應",
+                    difficulty: "mid",
+                    icon: "✍️"
+                },
+                {
+                    id: "tool-2",
+                    name: "Data Annotator",
+                    category: "midfield",
+                    hp: 120,
+                    description: "標記訓練數據以改進AI模型",
+                    difficulty: "mid",
+                    icon: "🏷️"
+                },
+                {
+                    id: "tool-3",
+                    name: "Model Fine-tuner",
+                    category: "attack",
+                    hp: 150,
+                    description: "調整預訓練模型以適應特定領域",
+                    difficulty: "high",
+                    icon: "⚙️"
+                },
+                {
+                    id: "tool-4",
+                    name: "Prompt Architecture Designer",
+                    category: "midfield",
+                    hp: 90,
+                    description: "設計複雜的多步提示詞流程",
+                    difficulty: "mid",
+                    icon: "🏗️"
+                },
+                {
+                    id: "tool-5",
+                    name: "AI Bias Auditor",
+                    category: "defense",
+                    hp: 110,
+                    description: "審查和糾正AI產生的偏見",
+                    difficulty: "high",
+                    icon: "🔍"
+                },
+                {
+                    id: "tool-6",
+                    name: "Inference Optimizer",
+                    category: "attack",
+                    hp: 100,
+                    description: "提高推理速度和資源效率",
+                    difficulty: "mid",
+                    icon: "⚡"
+                },
+                {
+                    id: "tool-7",
+                    name: "Knowledge Curator",
+                    category: "defense",
+                    hp: 130,
+                    description: "管理AI模型的知識庫內容",
+                    difficulty: "mid",
+                    icon: "📚"
+                },
+                {
+                    id: "tool-8",
+                    name: "API Integration Specialist",
+                    category: "midfield",
+                    hp: 140,
+                    description: "將多種AI模型API連接到一起",
+                    difficulty: "high",
+                    icon: "🔗"
+                }
+            ]
+        };
+
+        // 遊戲狀態
+        const gameState = {
+            round: 0,
+            score: 0,
+            streak: 0,
+            maxScore: 8,
+            selectedTools: [],
+            interviewData: null,
+            currentQuestion: 0,
+            questions: [],
+            questionStatuses: [],
+            showGoal: false,
+            ballX: 0,
+            goalEmoji: '',
+            selectedAnswer: null,
+            isAnswered: false,
+            isCorrect: false,
+            email: '',
+            starAnswers: {
+                situation: '',
+                task: '',
+                action: '',
+                result: ''
+            },
+            selectedToolIndex: null,
+            toolChoices: {},
+            countdown: 85,
+            timer: null,
+            gameOver: false,
+            showCelebration: false,
+            revealedTools: new Set(),
+            filteredTools: [],
+            language: 'zh-TW'
+        };
+
+        // 語言翻譯
+        const translations = {
+            'zh-TW': {
+                'TPV Group × AI World Cup': 'TPV 集團 × AI 世界盃',
+                '第一關：練習場選拔': '🏆 第一關：練習場選拔',
+                '8 球定生死，踢進才能晉身世界盃！': '8 球定生死，踢進才能晉身世界盃！',
+                '你的隊伍': '你的隊伍',
+                '恭喜通過!': '恭喜通過！',
+                '你通過了練習場選拔測試': '你通過了練習場選拔測試',
+                '得分': '得分',
+                '連續 goals': '連續 goals',
+                '進入 AI 道館對決': '進入 AI 道館對決',
+                '第二關：AI 道館對決': '第二關：AI 道館對決',
+                '任務': '任務',
+                '85 秒內選擇 4 個 AI 工具完成任務': '85 秒內選擇 4 個 AI 工具完成任務',
+                '揭開結果': '揭開結果',
+                '抽獎資格': '抽獎資格',
+                '第三關：賽後專訪': '第三關：賽後專訪',
+                '請用 STAR 框架分享一個你打算用 AI 工具改善工作的場景': '請用 STAR 框架分享一個你打算用 AI 工具改善工作的場景',
+                '情境（Situation）': '情境（Situation）',
+                '任務（Task）': '任務（Task）',
+                '行動（Action）': '行動（Action）',
+                '成果（Result）': '成果（Result）',
+                '每格至少填 5 個字，4 格都完成即可解鎖抽獎': '每格至少填 5 個字，4 格都完成即可解鎖抽獎',
+                '恭喜通過！': '恭喜通過！',
+                '你的 AI 技能一流！': '你的 AI 技能一流！',
+                '世界盃 AI 戰隊總教練': '世界盃 AI 戰隊總教練',
+                '最終得分': '最終得分',
+                '再來一次': '再來一次',
+                '🎉 中獎了！': '🎉 中獎了！',
+                '恭喜您獲得 USD 50 獎金！': '恭喜您獲得 USD 50 獎金！'
+            },
+            'en': {
+                'TPV Group × AI World Cup': 'TPV Group × AI World Cup',
+                '第一關：練習場選拔': '🏆 Round 1: Practice Field Selection',
+                '8 球定生死，踢進才能晉身世界盃！': '8 goals decide life and death, score to advance to World Cup!',
+                '你的隊伍': 'Your Team',
+                '恭喜通過!': 'Congratulations!',
+                '你通過了練習場選拔測試': 'You have passed the Practice Field Selection test',
+                '得分': 'Score',
+                '連續 goals': 'Streak',
+                '進入 AI 道館對決': 'Enter AI Dojo Match',
+                '第二關：AI 道館對決': 'Second Round: AI Dojo Match',
+                '任務': 'Mission',
+                '85 秒內選擇 4 個 AI 工具完成任務': 'Select 4 AI tools within 85 seconds to complete the mission',
+                '揭開結果': 'Reveal Results',
+                '抽獎資格': 'Prize Draw Entry',
+                '第三關：賽後專訪': 'Third Round: Post-Match Interview',
+                '請用 STAR 框架分享一個你打算用 AI 工具改善工作的場景': 'Please share a scenario where you plan to use AI tools to improve your work using the STAR framework',
+                '情境（Situation）': 'Situation',
+                '任務（Task）': 'Task',
+                '行動（Action）': 'Action',
+                '成果（Result）': 'Result',
+                '每格至少填 5 個字，4 格都完成即可解鎖抽獎': 'Each field requires at least 5 characters, complete all 4 fields to unlock the prize draw',
+                '恭喜通過！': 'Congratulations!',
+                '你的 AI 技能一流！': 'Your AI skills are excellent!',
+                '世界盃 AI 戰隊總教練': 'AI World Cup Team Coach',
+                '最終得分': 'Final Score',
+                '再來一次': 'Try Again',
+                '🎉 中獎了！': '🎉 Won!',
+                '恭喜您獲得 USD 50 獎金！': 'Congratulations! You won USD 50!'
+            }
+        };
+
+        // 初始化函式
+        document.addEventListener('DOMContentLoaded', function() {
+            initGame();
+        });
+
+        function initGame() {
+            gameState.questions = [...gameData.questions];
+            gameState.tools = [...gameData.tools];
+            gameState.filteredTools = [...gameState.tools];
+            showScreen('start-screen');
+        }
+
+        function selectLang(lang) {
+            gameState.language = lang;
+            const btns = document.querySelectorAll('.lm-btn');
+            btns.forEach(btn => {
+                if (btn.onclick.toString().includes("\"" + lang + "\"")) {
+                    btn.classList.add('active');
+                    const check = btn.querySelector('.lm-check');
+                    if (check) check.style.opacity = '1';
+                } else {
+                    btn.classList.remove('active');
+                    const check = btn.querySelector('.lm-check');
+                    if (check) check.style.opacity = '0';
+                }
+            });
+        }
+
+        function confirmLang() {
+            document.getElementById('lang-modal-overlay').style.display = 'none';
+            updateLanguage();
+            startGame();
+        }
+
+        function selectStartLang(lang) {
+            gameState.language = lang;
+            const btns = document.querySelectorAll('.start-lang-btn');
+            btns.forEach(btn => {
+                if (btn.onclick.toString().includes("\"" + lang + "\"")) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function startGame() {
+            // 重置遊戲狀態
+            Object.assign(gameState, {
+                round: 1,
+                score: 0,
+                streak: 0,
+                maxScore: 8,
+                selectedTools: [],
+                interviewData: null,
+                currentQuestion: 0,
+                questions: [...gameData.questions],
+                questionStatuses: Array(gameData.questions.length).fill('pending'),
+                showGoal: false,
+                ballX: 0,
+                goalEmoji: '',
+                selectedAnswer: null,
+                isAnswered: false,
+                isCorrect: false,
+                email: '',
+                starAnswers: { situation: '', task: '', action: '', result: '' },
+                selectedToolIndex: null,
+                toolChoices: {},
+                countdown: 85,
+                timer: null,
+                gameOver: false,
+                showCelebration: false,
+                revealedTools: new Set(),
+                filteredTools: [...gameData.tools]
+            });
+            
+            hideAllScreens();
+            showScreen('r1-screen');
+            renderPracticeQuestion();
+        }
+
+        function hideAllScreens() {
+            const screens = document.querySelectorAll('[id$="-screen"]');
+            screens.forEach(screen => {
+                screen.style.display = 'none';
+            });
+            // 隱藏語言彈窗
+            document.getElementById('lang-modal-overlay').style.display = 'none';
+            // 隱藏轉場畫面
+            document.getElementById('transition-screen').style.display = 'none';
+        }
+
+        function showScreen(screenId) {
+            hideAllScreens();
+            document.getElementById(screenId).style.display = 'block';
+        }
+
+        function updateLanguage() {
+            const t = translations[gameState.language];
+            if (!t) return;
+            
+            // 更新標題
+            document.querySelector('.header-title').textContent = t['第一關：練習場選拔'];
+            document.querySelector('.header-sub').textContent = t['8 球定生死，踢進才能晉身世界盃！'];
+        }
+
+        // 第一關邏輯
+        function renderPracticeQuestion() {
+            const q = gameState.questions[gameState.currentQuestion];
+            
+            // 更新比分顯示
+            document.querySelector('.sbar-score').textContent = `${gameState.score} : ${gameState.maxScore}`;
+            
+            // 更新進度指示器
+            const pips = document.querySelectorAll('.pip');
+            pips.forEach((pip, index) => {
+                pip.className = 'pip';
+                if (index < gameState.currentQuestion) {
+                    pip.classList.add(gameState.questionStatuses[index] === 'correct' ? 'ok' : 'ko');
+                } else if (index === gameState.currentQuestion) {
+                    pip.classList.add('cur');
+                }
+            });
+            
+            // 更新題目內容
+            document.querySelector('.q-cat').textContent = q.category;
+            document.querySelector('.q-text').textContent = q.text;
+            document.querySelector('.q-prompt').textContent = q.prompt;
+            
+            // 更新選項
+            const choices = document.querySelectorAll('.cb');
+            choices.forEach((choice, index) => {
+                choice.textContent = q.choices[index];
+                choice.className = 'cb';
+                choice.disabled = false;
+            });
+            
+            // 重置狀態
+            gameState.selectedAnswer = null;
+            gameState.isAnswered = false;
+            gameState.isCorrect = false;
+            document.querySelector('.fb').style.display = 'none';
+            document.querySelector('.next-btn').style.display = 'none';
+            
+            // 顯示目標動畫
+            if (gameState.showGoal) {
+                const goalText = document.querySelector('.goal-text');
+                goalText.textContent = gameState.goalEmoji;
+                goalText.className = 'goal-text ' + (gameState.goalEmoji === '⚽' ? 'zh-font' : '') + ' show';
+            }
+            
+            // 顯示或隱藏下一題按鈕
+            if (gameState.isAnswered) {
+                document.querySelector('.next-btn').style.display = 'block';
+            }
+        }
+
+        function selectAnswer(index) {
+            if (gameState.isAnswered) return;
+            
+            const q = gameState.questions[gameState.currentQuestion];
+            const correct = index === q.correct;
+            
+            gameState.selectedAnswer = index;
+            gameState.isAnswered = true;
+            gameState.isCorrect = correct;
+            
+            // 高亮選項
+            const choices = document.querySelectorAll('.cb');
+            choices[index].classList.add(correct ? 'correct' : 'wrong');
+            
+            if (q.correct !== index) {
+                choices[q.correct].classList.add('correct');
+            }
+            
+            // 更新狀態和得分
+            gameState.questionStatuses[gameState.currentQuestion] = correct ? 'correct' : 'wrong';
+            
+            if (correct) {
+                gameState.streak++;
+                gameState.score += gameState.streak;
+                document.querySelector('.fb').textContent = '正確！';
+                document.querySelector('.fb').className = 'fb ok';
+                showGoalAnimation(q.emoji, true);
+            } else {
+                gameState.streak = 0;
+                document.querySelector('.fb').textContent = `錯誤，答案是：${q.choices[q.correct]}`;
+                document.querySelector('.fb').className = 'fb ko';
+                showGoalAnimation('❌', false);
+            }
+            
+            document.querySelector('.fb').style.display = 'block';
+            document.querySelector('.next-btn').style.display = 'block';
+        }
+
+        function showGoalAnimation(emoji, isCorrect) {
+            gameState.showGoal = true;
+            gameState.goalEmoji = emoji;
+            
+            const goalText = document.querySelector('.goal-text');
+            goalText.textContent = emoji;
+            goalText.className = 'goal-text ' + (emoji === '⚽' ? 'zh-font' : '') + ' show';
+            
+            // 踢球動畫
+            const ball = document.querySelector('.ball');
+            const player = document.querySelector('.player-wrap');
+            
+            if (isCorrect) {
+                player.style.animation = 'kickBody 0.5s ease-out forwards, kickLeg 0.5s ease-out forwards';
+            } else {
+                player.style.animation = 'slump 0.5s ease-out forwards';
+            }
+            
+            setTimeout(() => {
+                gameState.showGoal = false;
+            }, 1500);
+        }
+
+        function nextQuestion() {
+            if (gameState.currentQuestion < gameState.questions.length - 1) {
+                gameState.currentQuestion++;
+                renderPracticeQuestion();
+            } else {
+                // 通過第一關
+                showScreen('r1-screen');
+                document.querySelector('.result-wrap').style.display = 'block';
+                document.querySelector('.next-btn').textContent = '進入 AI 道館對決';
+                document.querySelector('.next-btn').onclick = proceedToRound2;
+                
+                // 更新最終得分顯示
+                document.querySelector('.stat-num').textContent = gameState.score;
+                document.querySelectorAll('.stat-num')[1].textContent = gameState.streak;
+            }
+        }
+
+        function proceedToRound2() {
+            hideAllScreens();
+            showScreen('r2-screen');
+            renderAIDojoMatch();
+        }
+
+        function renderAIDojoMatch() {
+            // 初始化工具狀態
+            gameState.selectedTools = [];
+            gameState.gameOver = false;
+            gameState.countdown = 85;
+            gameState.revealedTools = new Set();
+            
+            // 隨機排序工具
+            gameState.tools.sort(() => Math.random() - 0.5);
+            
+            // 渲染工具卡片
+            const toolsGrid = document.querySelector('.tools-grid2');
+            toolsGrid.innerHTML = '';
+            
+            gameState.tools.forEach((tool, index) => {
+                const toolCard = document.createElement('div');
+                toolCard.className = 'tool-card2';
+                toolCard.onclick = () => selectTool(index);
+                
+                const difficultyColor = {
+                    'high': '#e53935',
+                    'mid': '#fb8c00',
+                    'low': '#43a047'
+                }[tool.difficulty];
+                
+                toolCard.innerHTML = `
+                    <div class="tool-icon2" style="background:${difficultyColor};color:#fff">${tool.icon}</div>
+                    <div>
+                        <div class="tool-rank2">${tool.category === 'attack' ? '攻擊型' : tool.category === 'midfield' ? '中場型' : '防禦型'}</div>
+                        <div class="tool-name2">${tool.name}</div>
+                        <div class="tool-tag2">${tool.description}</div>
+                        <div class="tool-desc2">HP: ${tool.hp} ${tool.difficulty === 'high' ? '(高難度)' : ''}</div>
+                    </div>
+                `;
+                
+                toolsGrid.appendChild(toolCard);
+            });
+            
+            // 更新 UI 狀態
+            document.querySelector('.r2-cta').disabled = true;
+            document.querySelector('.r2-cta').onclick = revealAllTools;
+            
+            // 啟動倒計時
+            startCountdown();
+        }
+
+        function selectTool(index) {
+            if (gameState.selectedTools.length >= 4) return;
+            if (gameState.selectedTools.includes(index)) return;
+            
+            gameState.selectedTools.push(index);
+            gameState.selectedToolIndex = index;
+            
+            // 更新選中工具的 UI
+            const toolCards = document.querySelectorAll('.tool-card2');
+            toolCards[index].classList.add('selected');
+            
+            // 更新可選擇工具數量
+            updateSelectedToolsUI();
+        }
+
+        function updateSelectedToolsUI() {
+            const remaining = 4 - gameState.selectedTools.length;
+            document.getElementById('remaining-tools').textContent = remaining;
+            
+            if (remaining === 0) {
+                document.querySelector('.r2-cta').disabled = false;
+            }
+        }
+
+        function revealAllTools() {
+            if (gameState.selectedTools.length !== 4) return;
+            
+            gameState.revealedTools = new Set(gameState.selectedTools);
+            gameState.gameOver = true;
+            
+            // 高亮選中的工具
+            const toolCards = document.querySelectorAll('.tool-card2');
+            gameState.selectedTools.forEach(index => {
+                toolCards[index].classList.add('selected');
+            });
+            
+            setTimeout(() => {
+                showScreen('r2-qa');
+                renderSelectedToolsList();
+                startCountdown();
+            }, 500);
+        }
+
+        function renderSelectedToolsList() {
+            const list = document.getElementById('selected-tools-list');
+            list.innerHTML = '';
+            
+            gameState.selectedTools.forEach((index, i) => {
+                const tool = gameState.tools[index];
+                const tag = document.createElement('div');
+                tag.style.cssText = 'background:#e8f5f1;border:1px solid #a8dcc8;border-radius:20px;padding:4px 12px;font-size:11px;color:#0F6E56;display:flex;align-items:center;gap:6px';
+                tag.innerHTML = `
+                    <span>${tool.name} ${tool.icon}</span>
+                    <span onclick="removeTool(${i})" style="cursor:pointer;color:#aaa;font-weight:bold">×</span>
+                `;
+                list.appendChild(tag);
+            });
+            
+            // 準備工具選擇區域
+            prepareToolChoices();
+        }
+
+        function removeTool(index) {
+            const toolIndex = gameState.selectedTools[index];
+            gameState.selectedTools.splice(index, 1);
+            
+            // 移除選中標識
+            const toolCards = document.querySelectorAll('.tool-card2');
+            toolCards[toolIndex].classList.remove('selected');
+            
+            updateSelectedToolsUI();
+            renderSelectedToolsList();
+            prepareToolChoices();
+        }
+
+        function prepareToolChoices() {
+            const remaining = 4 - gameState.selectedTools.length;
+            const availableTools = gameState.tools.filter((tool, index) => !gameState.selectedTools.includes(index));
+            
+            const choicesContainer = document.querySelector('.tool-choices');
+            choicesContainer.innerHTML = '';
+            
+            if (remaining > 0 && availableTools.length > 0) {
+                // 隨機選擇一個可用的工具作為替補
+                const randomIndex = Math.floor(Math.random() * availableTools.length);
+                const tool = availableTools[randomIndex];
+                const toolIndex = gameState.tools.indexOf(tool);
+                
+                const choiceBtn = document.createElement('button');
+                choiceBtn.className = 'tcb';
+                choiceBtn.innerHTML = `
+                    <span class="tick">✓</span>
+                    <span class="tcb-name">${tool.name}</span>
+                    <span class="tcb-tag">${tool.category === 'attack' ? '攻擊型' : tool.category === 'midfield' ? '中場型' : '防禦型'} • HP: ${tool.hp}</span>
+                `;
+                choiceBtn.onclick = () => selectToolChoice(toolIndex);
+                choicesContainer.appendChild(choiceBtn);
+                
+                gameState.toolChoices[toolIndex] = true;
+            } else {
+                choicesContainer.innerHTML = '<div style="padding:1rem;text-align:center;color:#888">您已選滿 4 個工具</div>';
+            }
+            
+            // 更新替補按鈕狀態
+            const nextBtn = document.querySelector('.r2-next-btn');
+            if (remaining === 0) {
+                nextBtn.disabled = false;
+                nextBtn.onclick = proceedToRound3;
+            } else {
+                nextBtn.disabled = true;
+            }
+        }
+
+        function selectToolChoice(index) {
+            if (gameState.selectedTools.length >= 4) return;
+            if (gameState.selectedTools.includes(index)) return;
+            
+            gameState.selectedTools.push(index);
+            delete gameState.toolChoices[index];
+            
+            // 更新選中工具的 UI
+            const toolCards = document.querySelectorAll('.tool-card2');
+            toolCards[index].classList.add('selected');
+            
+            updateSelectedToolsUI();
+            renderSelectedToolsList();
+            prepareToolChoices();
+        }
+
+        function filterTools(searchTerm) {
+            if (!searchTerm) {
+                gameState.filteredTools = [...gameState.tools];
+                return;
+            }
+            
+            gameState.filteredTools = gameState.tools.filter(tool => 
+                tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        let countdownInterval;
+
+        function startCountdown() {
+            gameState.countdown = 85;
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            countdownInterval = setInterval(() => {
+                gameState.countdown--;
+                
+                if (gameState.countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    gameState.gameOver = true;
+                    showGameOver();
+                }
+            }, 1000);
+        }
+
+        function showGameOver() {
+            // 遊戲結束邏輯
+            alert('時間到！遊戲結束。');
+            resetGame();
+        }
+
+        function proceedToRound3() {
+            clearInterval(countdownInterval);
+            
+            gameState.round = 3;
+            hideAllScreens();
+            showScreen('r3-screen');
+            
+            // 更新進度指示器
+            document.querySelector('.r3-step-item:nth-child(3)').classList.add('r3-step-done');
+            document.querySelector('.r3-step-item:nth-child(3) .r3-step-num').innerHTML = '✓';
+            document.querySelector('.r3-step-item:nth-child(3) .r3-step-txt').style.color = '#fff';
+            
+            // 顯示抽獎區域
+            document.getElementById('r3-draw-section').className = 'r3-draw-section';
+            document.getElementById('r3-draw-section').style.display = 'block';
+        }
+
+        function focusStep(step) {
+            const field = document.querySelectorAll('.r3-sv-field')[step - 1];
+            field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function updateStarAnswer(field, value) {
+            gameState.starAnswers[field] = value;
+            
+            // 更新字符計數
+            const charCount = document.querySelector(`.r3-sv-field:nth-child(${field === 'situation' ? 1 : field === 'task' ? 2 : field === 'action' ? 3 : 4} .r3-sv-char`);
+            if (charCount) {
+                charCount.textContent = `${value.length}/5`;
+            }
+            
+            // 檢查是否達到最少長度
+            if (value.length >= 5) {
+                field === 'situation' ? document.querySelector('.r3-sv-field:nth-child(1)').style.borderColor = '#43a047' :
+                field === 'task' ? document.querySelector('.r3-sv-field:nth-child(2)').style.borderColor = '#43a047' :
+                field === 'action' ? document.querySelector('.r3-sv-field:nth-child(3)').style.borderColor = '#43a047' :
+                field === 'result' ? document.querySelector('.r3-sv-field:nth-child(4)').style.borderColor = '#43a047' : null;
+            }
+        }
+
+        function validateEmail(email) {
+            const regex = /^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/;
+            const errorDiv = document.getElementById('email-error');
+            const submitBtn = document.querySelector('#r3-draw-section button');
+            
+            if (regex.test(email)) {
+                errorDiv.style.display = 'none';
+                submitBtn.disabled = false;
+                gameState.email = email;
+            } else {
+                errorDiv.style.display = 'block';
+                submitBtn.disabled = true;
+                gameState.email = '';
+            }
+        }
+
+        function submitInterview() {
+            if (!gameState.canSubmit()) return;
+            
+            // 完成訪問邏輯
+            gameState.interviewData = {
+                starAnswers: gameState.starAnswers,
+                email: gameState.email,
+                timestamp: new Date().toISOString()
+            };
+            
+            showScreen('draw-result-screen');
+            document.querySelector('#draw-result-screen div div div').innerHTML = `
+                <div style="font-size:28px;margin-bottom:.35rem">🎉 中獎了！</div>
+                <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:.3rem">恭喜您獲得 USD 50 獎金！</div>
+                <div style="font-size:12.5px;color:rgba(255,255,255,0.85);line-height:1.6;margin-bottom:.6rem">您已成功通過 TPV AI 世界盃測試，獲得抽獎資格</div>
+                <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:.45rem .75rem;display:inline-block;margin-bottom:.4rem">
+                    <div style="font-size:13.5px;font-weight:700;color:#fff;word-break:break-all">${gameState.email}</div>
+                </div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.6)">活動截止日期以官方公告為準</div>
+            `;
+        }
+
+        function resetGame() {
+            startGame();
+        }
+
+        function canSubmit() {
+            return gameState.starAnswers.situation &&
+                gameState.starAnswers.task &&
+                gameState.starAnswers.action &&
+                gameState.starAnswers.result &&
+                gameState.email &&
+                /^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(gameState.email);
+        }
+
+        // 平滑滾動到特定區域
+        document.querySelectorAll('a[href^=\"#\"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
